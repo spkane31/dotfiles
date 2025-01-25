@@ -1,0 +1,110 @@
+{
+  "files.trimTrailingWhitespace": true,
+  "jupyter.alwaysTrustNotebooks": true,
+  "jupyter.askForKernelRestart": false,
+  "terminal.integrated.inheritEnv": false,
+  //   "editor.disableMonospaceOptimizations": true,
+  "workbench.editorAssociations": {
+    "*.ipynb": "jupyter.notebook.ipynb"
+  },
+  "editor.tabSize": 4,
+  "[javascript]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascriptreact]": {
+    "editor.tabSize": 2
+  },
+  "[typescript]": {
+    "editor.tabSize": 2
+  },
+  "[typescriptreact]": {
+    "editor.tabSize": 2,
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.tabSize": 4
+  },
+  "go.lintOnSave": "file",
+  "go.formatTool": "gofmt",
+  "go.useLanguageServer": true,
+  "[go]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "golang.go",
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    }
+  },
+  "[rust]": {
+    "editor.tabSize": 4,
+    "editor.defaultFormatter": "rust-lang.rust-analyzer", // Makes the magic
+    "editor.formatOnSave": true // Optional
+  },
+  "[sql]": {
+    "editor.formatOnSave": true
+  },
+  "[markdown]": {
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false,
+    "editor.wordWrap": "on",
+    "editor.tabSize": 2,
+    "editor.quickSuggestions": {
+      "comments": "off",
+      "strings": "off",
+      "other": "off"
+    },
+    "editor.formatOnSave": false
+  },
+  "[r]": {
+    "editor.tabSize": 2
+  },
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit"
+    }
+  },
+  "[yaml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "diffEditor.ignoreTrimWhitespace": false
+  },
+  "[yml]": {
+    "editor.insertSpaces": true,
+    "editor.tabSize": 2,
+    "editor.autoIndent": "advanced",
+    "diffEditor.ignoreTrimWhitespace": false
+  },
+  "go.docsTool": "gogetdoc",
+  "editor.detectIndentation": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "files.autoSave": "afterDelay",
+  "editor.formatOnSave": true,
+  "workbench.colorTheme": "Cobalt2",
+  "workbench.iconTheme": "vscode-icons",
+  "editor.fontFamily": "Source Code Pro for Powerline",
+  "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
+  "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
+  "editor.renderWhitespace": "all",
+  "diffEditor.ignoreTrimWhitespace": false,
+  "update.mode": "none",
+  "extensions.autoUpdate": false,
+  "window.title": "[${folderName}]${separator}${dirty}${activeEditorShort}${separator}${appName}",
+  "vsicons.dontShowNewVersionMessage": true,
+  "security.workspace.trust.untrustedFiles": "open",
+  "go.toolsManagement.autoUpdate": true,
+  "azureFunctions.showCoreToolsWarning": false,
+  "notebook.formatOnSave.enabled": true,
+  "notebook.formatOnCellExecution": true,
+  "explorer.fileNesting.patterns": {
+    "Cargo.toml": "Cargo.lock",
+    "*.sqlite": "${capture}.${extname}-*",
+    "*.db": "${capture}.${extname}-*",
+    "*.sqlite3": "${capture}.${extname}-*",
+    "*.db3": "${capture}.${extname}-*",
+    "*.sdb": "${capture}.${extname}-*",
+    "*.s3db": "${capture}.${extname}-*"
+  }
+}
