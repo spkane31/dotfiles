@@ -130,6 +130,15 @@ function folder-sizes() {
 
     du -sh -- */ | sort -h | grep -v "OB" | tail -n ${top}
 }
+
+new-gw() {
+  local branch_name="$1"
+  local repo_name=$(basename "$(git rev-parse --show-toplevel)")
+  local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
+  local worktree_path="../${repo_name}-${branch_name}"
+  git worktree add -b "spk/${branch_name}" "$worktree_path" "${default_branch:-main}" && code "$worktree_path"
+}
+
 # pnpm
 export PNPM_HOME="/Users/seankane/Library/pnpm"
 case ":$PATH:" in
