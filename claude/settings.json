@@ -1,0 +1,70 @@
+{
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+        "allow": [
+            "Bash(cat:*)",
+            "Bash(find:*)",
+            "Bash(gh issue list:*)",
+            "Bash(gh pr checks:*)",
+            "Bash(gh pr diff:*)",
+            "Bash(gh pr list:*)",
+            "Bash(gh pr view:*)",
+            "Bash(gh pr watch:*)",
+            "Bash(gh run view:*)",
+            "Bash(go build:*)",
+            "Bash(go doc:*)",
+            "Bash(go list:*)",
+            "Bash(go mod:*)",
+            "Bash(go test:*)",
+            "Bash(go vet:*)",
+            "Bash(grep:*)",
+            "Bash(head:*)",
+            "Bash(jq:*)",
+            "Bash(ls:*)",
+            "Bash(tail:*)",
+            "Bash(uv sync:*)",
+            "Bash(yq:*)"
+        ],
+        "deny": [
+            "Read(./.env)"
+        ]
+    },
+    "enabledMcpjsonServers": [
+        "postgres",
+        "filesystem"
+    ],
+    "enabledPlugins": {
+        "rust-analyzer-lsp@claude-plugins-official": true
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Edit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "go vet ./...",
+                        "timeout": 5
+                    }
+                ]
+            }
+        ],
+        "Stop": [
+            {
+                "matcher": "Edit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "go vet ./...",
+                        "timeout": 5
+                    }
+                ]
+            }
+        ]
+    },
+    "statusLine": {
+        "type": "command",
+        "command": "npx -y ccstatusline@latest",
+        "padding": 0
+    }
+}
