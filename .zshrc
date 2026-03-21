@@ -19,6 +19,9 @@ alias gc="git commit"
 alias gco="git checkout"
 alias gfo="git fetch origin"
 alias gb="git checkout -b"
+alias gwa="git worktree add"
+alias gwr="git worktree remove"
+alias gwl="git worktree list"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
