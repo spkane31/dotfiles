@@ -2,6 +2,10 @@
     "$schema": "https://json.schemastore.org/claude-code-settings.json",
     "permissions": {
         "allow": [
+            "Bash(cargo build:*)",
+            "Bash(cargo clippy:*)",
+            "Bash(cargo fmt:*)",
+            "Bash(cargo test:*)",
             "Bash(cat:*)",
             "Bash(find:*)",
             "Bash(gh issue list:*)",
@@ -10,6 +14,7 @@
             "Bash(gh pr list:*)",
             "Bash(gh pr view:*)",
             "Bash(gh pr watch:*)",
+            "Bash(gh run list:*)",
             "Bash(gh run view:*)",
             "Bash(go build:*)",
             "Bash(go doc:*)",
@@ -22,8 +27,15 @@
             "Bash(jq:*)",
             "Bash(ls:*)",
             "Bash(tail:*)",
+            "Bash(uv run ruff check:*)",
+            "Bash(uv run ruff format:*)",
+            "Bash(uv run ruff:*)",
             "Bash(uv sync:*)",
-            "Bash(yq:*)"
+            "Bash(yq:*)",
+            "mcp__filesystem__directory_tree",
+            "mcp__filesystem__list_directory",
+            "mcp__filesystem__read_multiple_files",
+            "mcp__filesystem__read_text_file"
         ],
         "deny": [
             "Read(./.env)"
@@ -43,19 +55,7 @@
                 "hooks": [
                     {
                         "type": "command",
-                        "command": "go vet ./...",
-                        "timeout": 5
-                    }
-                ]
-            }
-        ],
-        "Stop": [
-            {
-                "matcher": "Edit|Write",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "go vet ./...",
+                        "command": "$HOME/.claude/hooks/conditional-format.sh",
                         "timeout": 5
                     }
                 ]
