@@ -19,6 +19,9 @@ alias gc="git commit"
 alias gco="git checkout"
 alias gfo="git fetch origin"
 alias gb="git checkout -b"
+alias gwa="git worktree add"
+alias gwr="git worktree remove"
+alias gwl="git worktree list"
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -136,7 +139,7 @@ new-gw() {
   local repo_name=$(basename "$(git rev-parse --show-toplevel)")
   local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
   local worktree_path="../${repo_name}-${branch_name}"
-  git worktree add -b "spk/${branch_name}" "$worktree_path" "${default_branch:-main}" && code "$worktree_path"
+  git worktree add -b "spk/${branch_name}" "$worktree_path" "origin/${default_branch:-main}" && code "$worktree_path"
 }
 
 # pnpm
