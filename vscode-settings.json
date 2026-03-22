@@ -3,9 +3,8 @@
   "jupyter.alwaysTrustNotebooks": true,
   "jupyter.askForKernelRestart": false,
   "terminal.integrated.inheritEnv": false,
-  //   "editor.disableMonospaceOptimizations": true,
   "workbench.editorAssociations": {
-    "*.ipynb": "jupyter.notebook.ipynb"
+    "*.ipynb": "jupyter-notebook"
   },
   "editor.tabSize": 4,
   "[javascript]": {
@@ -37,8 +36,8 @@
   },
   "[rust]": {
     "editor.tabSize": 4,
-    "editor.defaultFormatter": "rust-lang.rust-analyzer", // Makes the magic
-    "editor.formatOnSave": true // Optional
+    "editor.defaultFormatter": "rust-lang.rust-analyzer",
+    "editor.formatOnSave": true
   },
   "[sql]": {
     "editor.formatOnSave": true
@@ -82,7 +81,6 @@
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "files.autoSave": "afterDelay",
   "editor.formatOnSave": true,
-  "workbench.colorTheme": "Cobalt2",
   "workbench.iconTheme": "vscode-icons",
   "editor.fontFamily": "Source Code Pro for Powerline",
   "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
@@ -106,5 +104,20 @@
     "*.db3": "${capture}.${extname}-*",
     "*.sdb": "${capture}.${extname}-*",
     "*.s3db": "${capture}.${extname}-*"
-  }
+  },
+  "github.copilot.enable": {
+    "*": true,
+    "plaintext": false,
+    "markdown": false,
+    "scminput": false
+  },
+  "[jsonc]": {
+    "editor.defaultFormatter": "vscode.json-language-features"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "vscode.json-language-features",
+    "editor.tabSize": 2
+  },
+  "redhat.telemetry.enabled": false,
+  "git.openRepositoryInParentFolders": "never"
 }
