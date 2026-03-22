@@ -89,7 +89,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker zsh-completions mac-zsh-completions)
+plugins=(git docker mac-zsh-completions)
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -150,7 +150,20 @@ case ":$PATH:" in
 esac
 # pnpm end
 
+export PS1=xxxxx
+. "$HOME/.local/bin/env"
 
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/Users/seankane/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/seankane/Downloads/google-cloud-sdk/path.zsh.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/Users/seankane/Downloads/google-cloud-sdk/completion.zsh.inc' ]; then . '/Users/seankane/Downloads/google-cloud-sdk/completion.zsh.inc'; fi
+
+case ":${PATH}:" in
+    *:"$HOME/.cargo/bin":*)
+        ;;
+    *)
+        # Prepending path in case a system-installed rustc needs to be overridden
+        export PATH="$HOME/.cargo/bin:$PATH"
+        ;;
+esac
