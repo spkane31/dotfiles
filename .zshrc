@@ -5,8 +5,22 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
+source ~/powerlevel10k/powerlevel10k.zsh-theme
+
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
+
+# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
+# Initialization code that may require console input (password prompts, [y/n]
+# confirmations, etc.) must go above this block; everything else may go below.
+if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
+  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
+fi  
+
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+export GOPRIVATE=github.com/temporalio
 
 # Path to your oh-my-zsh installation.
 ZSH_DISABLE_COMPFIX=true
@@ -14,14 +28,23 @@ export ZSH="$HOME/.oh-my-zsh"
 export DEFAULT_USER="$(whoami)"
 alias g="git"
 alias gs="git status"
+alias gp="git push"
 alias ga="git add"
 alias gc="git commit"
 alias gco="git checkout"
 alias gfo="git fetch origin"
-alias gb="git checkout -b"
+alias gb="git branch"
+# git worktree commands
+alias gw="git worktree"
+alias gwl="git worktree list"
 alias gwa="git worktree add"
 alias gwr="git worktree remove"
-alias gwl="git worktree list"
+alias k="ct kubectl"
+alias l="ls -la"
+alias t="temporal"
+# eval "$(omni hook init zsh)"
+# eval "$(omni hook init zsh --command-alias kubectl kubectl --command-alias k9s k9s)"     
+source ~/.cloud-tools/ct_setup_shell.sh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -89,7 +112,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git docker mac-zsh-completions)
+plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker mac-zsh-completions)
+eval "$(temporal completion zsh)"
+
 source $ZSH/oh-my-zsh.sh
 
 # User configuration
@@ -134,7 +159,7 @@ function folder-sizes() {
     du -sh -- */ | sort -h | grep -v "OB" | tail -n ${top}
 }
 
-new-gw() {
+function new-gw() {
   local branch_name="$1"
   local repo_name=$(basename "$(git rev-parse --show-toplevel)")
   local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
@@ -150,8 +175,35 @@ case ":$PATH:" in
 esac
 # pnpm end
 
-export PS1=xxxxx
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
+autoload -Uz compinit && compinit
+
+# Enable history search with up/down arrows
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up arrow
+bindkey "^[[B" down-line-or-beginning-search # Down arrow
+
+# Configure history settings
+HISTSIZE=10000
+SAVEHIST=10000
+HISTFILE=~/.zsh_history
+setopt SHARE_HISTORY
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_ALL_DUPS
+setopt HIST_FIND_NO_DUPS
+
+export PATH="$HOME/go/bin:$PATH"
 . "$HOME/.local/bin/env"
+
+#THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 # The next line updates PATH for the Google Cloud SDK.
 if [ -f '/Users/seankane/Downloads/google-cloud-sdk/path.zsh.inc' ]; then . '/Users/seankane/Downloads/google-cloud-sdk/path.zsh.inc'; fi

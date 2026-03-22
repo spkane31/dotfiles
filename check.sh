@@ -28,7 +28,7 @@ for entry in "${FILES[@]}"; do
     ((changes++))
   elif ! diff -q "$REPO_DIR/$repo_file" "$local_file" > /dev/null 2>&1; then
     echo "DIFFERS  $repo_file <-> $local_file"
-    diff "$REPO_DIR/$repo_file" "$local_file"
+    # diff "$REPO_DIR/$repo_file" "$local_file"
     ((changes++))
   else
     echo "OK       $repo_file"
