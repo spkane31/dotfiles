@@ -2,38 +2,57 @@
   "$schema": "https://json.schemastore.org/claude-code-settings.json",
   "permissions": {
     "allow": [
+      "Bash(buf breaking:*)",
       "Bash(cargo build:*)",
       "Bash(cargo clippy:*)",
       "Bash(cargo fmt:*)",
+      "Bash(cargo search:*)",
       "Bash(cargo test:*)",
+      "Bash(cargo --version:*)",
       "Bash(cat:*)",
+      "Bash(echo \"exit: $?\")",
       "Bash(find:*)",
       "Bash(gh issue list:*)",
+      "Bash(gh issue view:*)",
       "Bash(gh job view:*)",
       "Bash(gh pr checks:*)",
+      "Bash(gh pr comments:*)",
       "Bash(gh pr diff:*)",
       "Bash(gh pr list:*)",
       "Bash(gh pr view:*)",
       "Bash(gh pr watch:*)",
+      "Bash(gh repo view:*)",
       "Bash(gh run list:*)",
       "Bash(gh run view:*)",
       "Bash(gh run watch:*)",
       "Bash(gh search:*)",
+      "Bash(gh workflow list:*)",
       "Bash(git diff:*)",
       "Bash(git fetch:*)",
       "Bash(git log:*)",
       "Bash(git ls-tree:*)",
+      "Bash(git show:*)",
+      "Bash(git submodule status:*)",
       "Bash(go build:*)",
       "Bash(go doc:*)",
       "Bash(go list:*)",
       "Bash(go mod:*)",
       "Bash(go test:*)",
       "Bash(go vet:*)",
+      "Bash(gofmt:*)",
+      "Bash(golangci-lint run:*)",
       "Bash(grep:*)",
       "Bash(head:*)",
       "Bash(jq:*)",
       "Bash(ls:*)",
+      "Bash(make lint:*)",
+      "Bash(make lint-code:*)",
+      "Bash(make protoc:*)",
+      "Bash(make proto:*)",
+      "Bash(rustc --version)",
+      "Bash(sed:*)",
       "Bash(tail:*)",
+      "Bash(tee:*)",
       "Bash(uv run ruff check:*)",
       "Bash(uv run ruff format:*)",
       "Bash(uv run ruff:*)",
@@ -43,31 +62,18 @@
       "mcp__filesystem__list_directory",
       "mcp__filesystem__read_multiple_files",
       "mcp__filesystem__read_text_file",
-      "mcp__ide__getDiagnostics"
+      "mcp__ide__getDiagnostics",
+      "mcp__notion__notion-fetch"
     ],
     "deny": [
       "Read(./.env)"
     ]
   },
+  "model": "sonnet",
   "enabledMcpjsonServers": [
     "postgres",
     "filesystem"
   ],
-  "enabledPlugins": {
-    "rust-analyzer-lsp@claude-plugins-official": true,
-    "gopls-lsp@claude-plugins-official": true,
-    "superpowers@claude-plugins-official": true,
-    "learning-opportunities@learning-opportunities": true,
-    "orient@learning-opportunities": true
-  },
-  "extraKnownMarketplaces": {
-    "learning-opportunities": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
-      }
-    }
-  },
   "hooks": {
     "Notification": [
       {
@@ -78,22 +84,32 @@
           }
         ]
       }
-    ],
-    "PreToolUse": [
-      {
-        "matcher": "command",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "/Users/seankane/git/codeberg.org/timods/agent-blocker/bin/agent-blocker"
-          }
-        ]
-      }
     ]
   },
   "statusLine": {
     "type": "command",
     "command": "npx -y ccstatusline@latest",
     "padding": 0
-  }
+  },
+  "enabledPlugins": {
+    "superpowers@claude-plugins-official": true,
+    "learning-opportunities@learning-opportunities": true,
+    "orient@learning-opportunities": true,
+    "andrej-karpathy-skills@karpathy-skills": true
+  },
+  "extraKnownMarketplaces": {
+    "learning-opportunities": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
+      }
+    },
+    "karpathy-skills": {
+      "source": {
+        "source": "github",
+        "repo": "forrestchang/andrej-karpathy-skills"
+      }
+    }
+  },
+  "skipWorkflowUsageWarning": true
 }

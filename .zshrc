@@ -15,7 +15,7 @@ source ~/powerlevel10k/powerlevel10k.zsh-theme
 # confirmations, etc.) must go above this block; everything else may go below.
 if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi  
+fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
@@ -42,8 +42,7 @@ alias gwr="git worktree remove"
 alias k="ct kubectl"
 alias l="ls -la"
 alias t="temporal"
-# eval "$(omni hook init zsh)"
-# eval "$(omni hook init zsh --command-alias kubectl kubectl --command-alias k9s k9s)"     
+alias claude-usage='npx ccusage monthly --since "$(date +%Y%m01)"'
 source ~/.cloud-tools/ct_setup_shell.sh
 
 # Set name of the theme to load --- if set to "random", it will
@@ -161,10 +160,59 @@ function folder-sizes() {
 
 function new-gw() {
   local branch_name="$1"
+  local base_branch="$2"
   local repo_name=$(basename "$(git rev-parse --show-toplevel)")
+  local repo_root=$(git rev-parse --show-toplevel)
   local default_branch=$(git symbolic-ref refs/remotes/origin/HEAD 2>/dev/null | sed 's|refs/remotes/origin/||')
   local worktree_path="../${repo_name}-${branch_name}"
-  git worktree add -b "spk/${branch_name}" "$worktree_path" "origin/${default_branch:-main}" && code "$worktree_path"
+
+  # Default to origin's default branch when no base is given
+  local base_ref="origin/${base_branch:-${default_branch:-main}}"
+
+  git fetch origin "${base_branch:-${default_branch:-main}}" 2>/dev/null
+  git worktree add -b "spk/${branch_name}" "$worktree_path" "$base_ref" || return 1
+
+  if [ -d "${repo_root}/.claude" ]; then
+    cp -r "${repo_root}/.claude/." "${worktree_path}/.claude"
+  fi
+  code "$worktree_path"
+}
+
+aiusage() {
+  npx ccusage weekly --since "$(date -v-6w +%F)" --json |
+    jq -r '
+      def commas:
+        tostring
+        | explode
+        | reverse as $chars
+        | reduce range(0; ($chars | length)) as $i
+            ("";
+              . +
+              (if $i > 0 and ($i % 3 == 0) then "," else "" end) +
+              ([$chars[$i]] | implode)
+            )
+        | explode
+        | reverse
+        | implode;
+
+      def money:
+        (.*100 | round) as $cents
+        | ($cents / 100 | floor | commas) as $dollars
+        | ($cents % 100 | tostring) as $c
+        | "$" + $dollars + "." + (if ($c | length) == 1 then "0" + $c else $c end);
+
+      ["week","input","output","cache_create","cache_read","total_tokens","cost_usd"],
+      (.weekly[] | [
+        .period,
+        (.inputTokens | commas),
+        (.outputTokens | commas),
+        (.cacheCreationTokens | commas),
+        (.cacheReadTokens | commas),
+        (.totalTokens | commas),
+        (.totalCost | money)
+      ])
+      | @tsv
+    ' | column -t
 }
 
 # pnpm
