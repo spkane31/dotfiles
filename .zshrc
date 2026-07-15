@@ -24,7 +24,6 @@ export GOPRIVATE=github.com/temporalio
 
 # Path to your oh-my-zsh installation.
 ZSH_DISABLE_COMPFIX=true
-export ZSH="$HOME/.oh-my-zsh"
 export DEFAULT_USER="$(whoami)"
 alias g="git"
 alias gs="git status"
@@ -113,9 +112,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker mac-zsh-completions)
-eval "$(temporal completion zsh)"
 
-source $ZSH/oh-my-zsh.sh
 
 # User configuration
 
@@ -229,6 +226,12 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 autoload -Uz compinit && compinit
+
+
+
+source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 # Enable history search with up/down arrows
 autoload -U up-line-or-beginning-search
