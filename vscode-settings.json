@@ -88,7 +88,7 @@
   "editor.renderWhitespace": "all",
   "diffEditor.ignoreTrimWhitespace": false,
   "update.mode": "none",
-  "extensions.autoUpdate": false,
+  "extensions.autoUpdate": "off",
   "window.title": "[${folderName}]${separator}${dirty}${activeEditorShort}${separator}${appName}",
   "vsicons.dontShowNewVersionMessage": true,
   "security.workspace.trust.untrustedFiles": "open",
@@ -119,5 +119,8 @@
     "editor.tabSize": 2
   },
   "redhat.telemetry.enabled": false,
-  "git.openRepositoryInParentFolders": "never"
+  "git.openRepositoryInParentFolders": "never",
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "githubPullRequests.pullBranch": "never",
+  "protobuf.autoDetection.prompted": true
 }
