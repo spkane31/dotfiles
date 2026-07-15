@@ -43,6 +43,7 @@ alias k="ct kubectl"
 alias l="ls -la"
 alias t="temporal"
 alias claude-usage='npx ccusage monthly --since "$(date +%Y%m01)"'
+alias opendiff='{ git diff HEAD --name-only; git ls-files --others --exclude-standard; } | grep -v '\.pb\.go$' | sort -u | xargs code '
 source ~/.cloud-tools/ct_setup_shell.sh
 
 # Set name of the theme to load --- if set to "random", it will
