@@ -1,7 +1,9 @@
 #!/usr/bin/env bash
 # Symlinks repo files into their local machine paths, backing up any
 # pre-existing non-symlink file into .backup/<hostname>/ first.
-# To add a new file: append "repo/file:$HOME/local/path" to FILES.
+# To add a new file or directory: append "repo/path:$HOME/local/path" to FILES.
+# Missing repo paths are skipped, allowing optional configuration to be added
+# incrementally without creating broken symlinks.
 
 REPO_DIR="$(cd "$(dirname "$0")" && pwd)"
 HOSTNAME="$(hostname -s 2>/dev/null || hostname)"
@@ -19,15 +21,28 @@ FILES=(
   ".zshrc:$HOME/.zshrc"
   "vscode-settings.json:$VSCODE_SETTINGS"
   "claude/settings.json:$HOME/.claude/settings.json"
+  "claude/CLAUDE.md:$HOME/.claude/CLAUDE.md"
+  "claude/skills:$HOME/.claude/skills"
+  "codex/config.toml:$HOME/.codex/config.toml"
+  "codex/rules/default.rules:$HOME/.codex/rules/default.rules"
+  "codex/AGENTS.md:$HOME/.codex/AGENTS.md"
+  "codex/skills:$HOME/.codex/skills"
 )
 
 linked=0
 backed_up=0
 ok=0
+skipped=0
 for entry in "${FILES[@]}"; do
   repo_file="${entry%%:*}"
   local_file="${entry#*:}"
   repo_path="$REPO_DIR/$repo_file"
+
+  if [ ! -e "$repo_path" ] && [ ! -L "$repo_path" ]; then
+    echo "SKIPPED        $repo_file (not in repository)"
+    ((skipped++))
+    continue
+  fi
 
   if [ -L "$local_file" ] && [ "$(readlink "$local_file")" = "$repo_path" ]; then
     echo "OK             $repo_file"
@@ -49,4 +64,4 @@ for entry in "${FILES[@]}"; do
 done
 
 echo ""
-echo "$ok already linked, $linked newly linked, $backed_up backed up."
+echo "$ok already linked, $linked newly linked, $backed_up backed up, $skipped skipped."

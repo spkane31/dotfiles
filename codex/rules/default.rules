@@ -1,0 +1,34 @@
+prefix_rule(pattern=["cargo", ["build", "clippy", "fmt", "search", "test", "--version"]], decision="allow")
+prefix_rule(pattern=["rustc", "--version"], decision="allow")
+
+prefix_rule(pattern=["buf", "breaking"], decision="allow")
+
+prefix_rule(pattern=[["cat", "find", "grep", "head", "jq", "ls", "sed", "tail", "tee", "yq"]], decision="allow")
+prefix_rule(pattern=["echo", "exit: $?"], decision="allow")
+
+prefix_rule(pattern=["gh", "issue", ["list", "view"]], decision="allow")
+prefix_rule(pattern=["gh", "job", "view"], decision="allow")
+prefix_rule(pattern=["gh", "pr", ["checks", "comments", "diff", "list", "view", "watch"]], decision="allow")
+prefix_rule(pattern=["gh", "repo", "view"], decision="allow")
+prefix_rule(pattern=["gh", "run", ["download", "list", "view", "watch"]], decision="allow")
+prefix_rule(pattern=["gh", "run", "download"], decision="allow")
+prefix_rule(pattern=["gh", "search"], decision="allow")
+prefix_rule(pattern=["gh", "workflow", "list"], decision="allow")
+
+prefix_rule(pattern=["git", ["diff", "fetch", "log", "ls-tree", "show"]], decision="allow")
+prefix_rule(pattern=["git", "submodule", "status"], decision="allow")
+# Experiment with some directories
+prefix_rule(pattern=["git", "-C", "/Users/seankane/git/github.com/temporalio/temporal", ["diff", "fetch", "log", "show"]], decision="allow")
+prefix_rule(pattern=["git", "-C", "/tmp/temporal-pr-10106", ["diff", "fetch", "log", "show"]], decision="allow")
+
+prefix_rule(pattern=["go", ["build", "doc", "list", "mod", "test", "vet"]], decision="allow")
+prefix_rule(pattern=["gofmt"], decision="allow")
+prefix_rule(pattern=["golangci-lint", "run"], decision="allow")
+prefix_rule(pattern=["grep"], decision="allow")
+
+prefix_rule(pattern=["make", ["lint", "lint-code", "protoc", "proto"]], decision="allow")
+
+prefix_rule(pattern=["rg"], decision="allow")
+
+prefix_rule(pattern=["uv", "run", "ruff"], decision="allow")
+prefix_rule(pattern=["uv", "sync"], decision="allow")
