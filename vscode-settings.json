@@ -122,5 +122,6 @@
   "git.openRepositoryInParentFolders": "never",
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "githubPullRequests.pullBranch": "never",
-  "protobuf.autoDetection.prompted": true
+  "protobuf.autoDetection.prompted": true,
+  "claudeCode.preferredLocation": "panel"
 }
