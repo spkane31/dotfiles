@@ -32,6 +32,12 @@ When fixing bugs or implementing changes, prefer minimal, scoped changes. Do not
 
 For proto/generated files, always use the project's Make targets (e.g., `make proto`) instead of manually generating or editing proto output files.
 
+## Testing
+
+- Only write new tests for bug fixes or new features. Do not add tests for refactors or other changes unless instructed to.
+- Every new test must fail without the change and pass with the change. Agents must verify this directly: run the test against the code before the fix/feature (confirm it fails), then again after (confirm it passes). Do not assume this without running it.
+- For new features, tests must exercise the feature itself, not the underlying framework or library, and must be high quality, reusing existing test patterns and frameworks already present in the codebase.
+
 ## Go Development 
 
 When reviewing or modifying Go code, always check for revive/golangci-lint compliance before submitting. Run `make lint` or equivalent after edits. Watch for: assertions in goroutines, deprecated APIs, nesting depth violations.
