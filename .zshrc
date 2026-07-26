@@ -34,14 +34,12 @@ alias gco="git checkout"
 alias gfo="git fetch origin"
 alias gb="git branch"
 # git worktree commands
-alias gw="git worktree"
-alias gwl="git worktree list"
 alias gwa="git worktree add"
 alias gwr="git worktree remove"
+alias gwl="git worktree list"
 alias k="ct kubectl"
 alias l="ls -la"
 alias t="temporal"
-alias claude-usage='npx ccusage monthly --since "$(date +%Y%m01)"'
 alias opendiff='{ git diff HEAD --name-only; git ls-files --others --exclude-standard; } | grep -v '\.pb\.go$' | sort -u | xargs code '
 source ~/.cloud-tools/ct_setup_shell.sh
 
