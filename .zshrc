@@ -5,7 +5,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+[[ -r /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme ]] && source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
@@ -41,7 +41,7 @@ alias k="ct kubectl"
 alias l="ls -la"
 alias t="temporal"
 alias opendiff='{ git diff HEAD --name-only; git ls-files --others --exclude-standard; } | grep -v '\.pb\.go$' | sort -u | xargs code '
-source ~/.cloud-tools/ct_setup_shell.sh
+[[ -r ~/.cloud-tools/ct_setup_shell.sh ]] && source ~/.cloud-tools/ct_setup_shell.sh
 
 # Set name of the theme to load --- if set to "random", it will
 # load a random theme each time oh-my-zsh is loaded, in which case,
@@ -227,9 +227,11 @@ autoload -Uz compinit && compinit
 
 
 
-source /opt/homebrew/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+if [[ -r /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh ]]; then
+  source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+fi
 
 # Enable history search with up/down arrows
 autoload -U up-line-or-beginning-search
