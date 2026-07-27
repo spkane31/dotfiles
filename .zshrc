@@ -5,24 +5,34 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
   source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
 fi
 
-[[ -r /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme ]] && source /usr/local/share/powerlevel10k/powerlevel10k.zsh-theme
+# Load Powerlevel10k from Homebrew on macOS or Linux, then fall back to a
+# standalone checkout or the Oh My Zsh custom theme location.
+export ZSH="${ZSH:-$HOME/.oh-my-zsh}"
+export ZSH_CUSTOM="${ZSH_CUSTOM:-$ZSH/custom}"
+
+p10k_theme=""
+if (( $+commands[brew] )); then
+  p10k_theme="$(brew --prefix powerlevel10k 2>/dev/null)/share/powerlevel10k/powerlevel10k.zsh-theme"
+fi
+[[ -r "$p10k_theme" ]] || p10k_theme="$HOME/powerlevel10k/powerlevel10k.zsh-theme"
+[[ -r "$p10k_theme" ]] || p10k_theme="$ZSH_CUSTOM/themes/powerlevel10k/powerlevel10k.zsh-theme"
+if [[ -r "$p10k_theme" ]]; then
+  source "$p10k_theme"
+  ZSH_THEME=""
+else
+  ZSH_THEME="powerlevel10k/powerlevel10k"
+fi
+unset p10k_theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
-
-# Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
-# Initialization code that may require console input (password prompts, [y/n]
-# confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
 
 # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 export GOPRIVATE=github.com/temporalio
 
-# Path to your oh-my-zsh installation.
+# Path to your Oh My Zsh installation is configured above.
 ZSH_DISABLE_COMPFIX=true
 export DEFAULT_USER="$(whoami)"
 alias g="git"
@@ -47,7 +57,8 @@ alias opendiff='{ git diff HEAD --name-only; git ls-files --others --exclude-sta
 # load a random theme each time oh-my-zsh is loaded, in which case,
 # to know which specific one was loaded, run: echo $RANDOM_THEME
 # See https://github.com/ohmyzsh/ohmyzsh/wiki/Themes
-ZSH_THEME="powerlevel10k/powerlevel10k"
+# ZSH_THEME is set above: empty when Powerlevel10k was loaded directly, or
+# powerlevel10k/powerlevel10k when Oh My Zsh must load its custom theme.
 
 # Set list of themes to pick from when loading at random
 # Setting this variable when ZSH_THEME=random will cause zsh to load
@@ -109,7 +120,21 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker mac-zsh-completions)
+plugins=(git docker)
+[[ -d "$ZSH_CUSTOM/plugins/mac-zsh-completions" ]] && plugins+=(mac-zsh-completions)
+
+[[ -r "$ZSH/oh-my-zsh.sh" ]] && source "$ZSH/oh-my-zsh.sh"
+
+# These optional plugins are loaded from Homebrew when available. Their
+# Homebrew prefixes work on Apple Silicon, Intel macOS, and Linuxbrew.
+if (( $+commands[brew] )); then
+  zsh_autosuggestions="$(brew --prefix zsh-autosuggestions 2>/dev/null)/share/zsh-autosuggestions/zsh-autosuggestions.zsh"
+  [[ -r "$zsh_autosuggestions" ]] && source "$zsh_autosuggestions"
+
+  zsh_syntax_highlighting="$(brew --prefix zsh-syntax-highlighting 2>/dev/null)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+  [[ -r "$zsh_syntax_highlighting" ]] && source "$zsh_syntax_highlighting"
+  unset zsh_autosuggestions zsh_syntax_highlighting
+fi
 
 
 # User configuration
@@ -139,9 +164,6 @@ plugins=(git zsh-autosuggestions zsh-syntax-highlighting docker mac-zsh-completi
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
-
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 function clear-docker() {
     docker rm -vf $(docker ps -aq)
@@ -227,19 +249,30 @@ autoload -Uz compinit && compinit
 
 
 
-if [[ -r /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh ]]; then
-  source /usr/local/share/zsh-history-substring-search/zsh-history-substring-search.zsh
-  bindkey '^[[A' history-substring-search-up
-  bindkey '^[[B' history-substring-search-down
+zsh_history_substring_search=""
+zsh_history_substring_search_loaded=false
+if (( $+commands[brew] )); then
+  zsh_history_substring_search="$(brew --prefix zsh-history-substring-search 2>/dev/null)/share/zsh-history-substring-search/zsh-history-substring-search.zsh"
 fi
+if [[ -r "$zsh_history_substring_search" ]]; then
+  source "$zsh_history_substring_search"
+  zsh_history_substring_search_loaded=true
+fi
+unset zsh_history_substring_search
 
 # Enable history search with up/down arrows
 autoload -U up-line-or-beginning-search
 autoload -U down-line-or-beginning-search
 zle -N up-line-or-beginning-search
 zle -N down-line-or-beginning-search
-bindkey "^[[A" up-line-or-beginning-search # Up arrow
-bindkey "^[[B" down-line-or-beginning-search # Down arrow
+if [[ "$zsh_history_substring_search_loaded" == true ]]; then
+  bindkey '^[[A' history-substring-search-up
+  bindkey '^[[B' history-substring-search-down
+else
+  bindkey "^[[A" up-line-or-beginning-search # Up arrow
+  bindkey "^[[B" down-line-or-beginning-search # Down arrow
+fi
+unset zsh_history_substring_search_loaded
 
 # Configure history settings
 HISTSIZE=10000
