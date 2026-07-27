@@ -111,5 +111,6 @@
       }
     }
   },
-  "skipWorkflowUsageWarning": true
+  "skipWorkflowUsageWarning": true,
+  "agentPushNotifEnabled": true
 }
