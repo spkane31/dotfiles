@@ -69,7 +69,7 @@
       "Read(./.env)"
     ]
   },
-  "model": "sonnet",
+  "model": "opus[1m]",
   "enabledMcpjsonServers": [
     "postgres",
     "filesystem"
@@ -95,7 +95,8 @@
     "superpowers@claude-plugins-official": true,
     "learning-opportunities@learning-opportunities": true,
     "orient@learning-opportunities": true,
-    "andrej-karpathy-skills@karpathy-skills": true
+    "andrej-karpathy-skills@karpathy-skills": true,
+    "slack@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "learning-opportunities": {

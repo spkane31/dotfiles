@@ -22,6 +22,7 @@ prefix_rule(pattern=["git", "-C", "/Users/seankane/git/github.com/temporalio/tem
 prefix_rule(pattern=["git", "-C", "/tmp/temporal-pr-10106", ["diff", "fetch", "log", "show"]], decision="allow")
 
 prefix_rule(pattern=["go", ["build", "doc", "list", "mod", "test", "vet"]], decision="allow")
+prefix_rule(pattern=["go", "test"], decision="allow")
 prefix_rule(pattern=["gofmt"], decision="allow")
 prefix_rule(pattern=["golangci-lint", "run"], decision="allow")
 prefix_rule(pattern=["grep"], decision="allow")
