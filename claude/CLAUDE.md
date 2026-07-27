@@ -40,7 +40,7 @@ For proto/generated files, always use the project's Make targets (e.g., `make pr
 
 ## Go Development
 
-When reviewing or modifying Go code, always check for revive/golangci-lint compliance before submitting. Run `make lint` or equivalent after edits. Watch for: assertions in goroutines, deprecated APIs, nesting depth violations.
+When reviewing or modifying Go code, always check for `go vet` and `go fmt` and basic formatting issues.
 
 ## Workflow
 
