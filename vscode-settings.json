@@ -123,5 +123,13 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "githubPullRequests.pullBranch": "never",
   "protobuf.autoDetection.prompted": true,
-  "claudeCode.preferredLocation": "panel"
+"claudeCode.preferredLocation": "panel",
+"terminal.integrated.allowedLinkSchemes": [
+    "file",
+    "http",
+    "https",
+    "mailto",
+    "vscode",
+    "vscode-insiders"
+]
 }
