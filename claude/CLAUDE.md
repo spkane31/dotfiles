@@ -76,3 +76,7 @@ When reviewing or modifying Go code, always check for `go vet` and `go fmt` and 
 ## Workflow
 
 When asked to implement a plan, start implementing immediately. Do not spend time re-exploring or re-planning unless explicitly asked. Bias toward action over analysis.
+
+## After Plan Completion
+
+After completing a plan, generate a list of manual review items (code, tests, architecture decisions), and write them in a markdown checklist-style format in .local/hitl-review/<date>/<plan-name>/review.md
