@@ -106,7 +106,7 @@
     "*.s3db": "${capture}.${extname}-*"
   },
   "github.copilot.enable": {
-    "*": true,
+    "*": false,
     "plaintext": false,
     "markdown": false,
     "scminput": false
@@ -123,13 +123,14 @@
   "workbench.secondarySideBar.defaultVisibility": "hidden",
   "githubPullRequests.pullBranch": "never",
   "protobuf.autoDetection.prompted": true,
-"claudeCode.preferredLocation": "panel",
-"terminal.integrated.allowedLinkSchemes": [
+  "claudeCode.preferredLocation": "panel",
+  "terminal.integrated.allowedLinkSchemes": [
     "file",
     "http",
     "https",
     "mailto",
     "vscode",
     "vscode-insiders"
-]
+  ],
+  "makefile.configureOnOpen": false
 }

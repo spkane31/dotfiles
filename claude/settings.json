@@ -69,7 +69,6 @@
       "Read(./.env)"
     ]
   },
-  "model": "opus[1m]",
   "enabledMcpjsonServers": [
     "postgres",
     "filesystem"
@@ -81,6 +80,18 @@
           {
             "type": "command",
             "command": "claude-code-notification"
+          }
+        ]
+      }
+    ],
+    "SessionStart": [
+      {
+        "matcher": "*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash '/Users/seankane/.claude/hooks/herdr-agent-state.sh' session",
+            "timeout": 10
           }
         ]
       }
@@ -96,7 +107,8 @@
     "learning-opportunities@learning-opportunities": true,
     "orient@learning-opportunities": true,
     "andrej-karpathy-skills@karpathy-skills": true,
-    "slack@claude-plugins-official": true
+    "slack@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "learning-opportunities": {
