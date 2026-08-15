@@ -97,6 +97,10 @@ After all three personas have reported:
 2. Promote findings caught by 2+ personas to the next severity level.
 3. Produce the final structured output.
 
+### Step 5: Write Findings to File
+
+Write the final structured output (see [Output Format](#output-format)) to `.local/adversarial-review/<YYYY-MM-DD>/findings.md`, using today's date. Create the directory if it doesn't exist. Also present the same output in your response.
+
 ## The Three Personas
 
 ### Persona 1: The Saboteur
@@ -182,7 +186,7 @@ After all three personas have reported:
 
 ## Output Format
 
-Structure your review as follows:
+Structure your review as follows, and write it to `.local/adversarial-review/<YYYY-MM-DD>/findings.md` (see [Step 5](#step-5-write-findings-to-file)):
 
 ```markdown
 ## Adversarial Review: [brief description of what was reviewed]
