@@ -4,6 +4,8 @@
 
 Export learning cards so they import into Anki's stock **Basic** and **Cloze** note types without requiring custom fields or a custom note type.
 
+This is the secondary export target, for importing into Anki itself. The primary delivered format is the deck YAML in `deck-yaml.md`. Both read the same `cards.json`.
+
 ## Kind mapping
 
 | Learning kind | Anki note type | Input fields | Exported regular fields |
@@ -68,6 +70,7 @@ After changing the exporter, run:
 
 ```bash
 python scripts/test_anki_tsv.py
+python scripts/test_deck_yaml.py
 ```
 
 The regression test checks all four card kinds, stock note-type directives, special tag-column metadata, absence of an importable header row, provenance handling, and HTML newline conversion.

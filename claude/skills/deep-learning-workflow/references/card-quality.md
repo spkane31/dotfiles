@@ -87,45 +87,69 @@ Look especially for missing:
 - implications;
 - application triggers.
 
+## Deck YAML: the delivered format
+
+Cards are delivered in the deck schema of the learner's personal Anki tool
+(`decks` -> `cards` with `id`, `front`, `back`, `date`, `tags`, `priority`). See
+`deck-yaml.md` for the full schema, id conventions, the importance-to-`priority`
+mapping, and how the four learning kinds fit a front/back-only schema.
+
+Set `priority` from the audit rubric below rather than by feel.
+
 ## JSON schema for export
 
-Store cards as a JSON array. The exporter accepts all four learning kinds: `qa`, `cloze`, `scenario`, and `reconstruction`. `qa`, `scenario`, and `reconstruction` use `front`/`back` and are exported to Anki's stock **Basic** note type. `cloze` uses `text` and is exported to the stock **Cloze** note type.
+Author cards as a JSON array; both exporters read it. `deck_yaml.py` produces deck YAML
+and `anki_tsv.py` produces stock-Anki TSV. Both accept all four learning kinds: `qa`,
+`cloze`, `scenario`, and `reconstruction`. `qa`, `scenario`, and `reconstruction` use
+`front`/`back` and become Anki **Basic** notes. `cloze` uses `text` and becomes a stock
+**Cloze** note.
 
 Use metadata consistently:
 - `source`: canonical exact provenance pointer, such as a chapter/section, PR, architecture doc, or code responsibility. Do not duplicate it as a `source:` tag.
-- `verified`: optional `YYYY-MM` for knowledge tied to a mutable system/codebase. The exporter renders it on the back and derives a `verified::YYYY-MM` search tag.
+- `verified`: optional `YYYY-MM` for knowledge tied to a mutable system/codebase. The TSV exporter renders it on the back and derives a `verified::YYYY-MM` search tag; the deck exporter folds it into `back`.
 - `tags`: semantic categories and stable search scopes, for example `engineering`, `transactions`, or `system::payments::worker`. Do not manually encode `source:` or `verified:` provenance here.
 - `extra`: learner-facing context/example that should appear on the back, not provenance.
+- `id`: stable semantic slug for the deck schema. Author it; the exporter otherwise derives `{deck-id}-{NN}`.
+- `priority`: importance `0-100`, default `50`.
+- `date`: authoring date `YYYY-MM-DD`, defaulting to the export date.
+- `deck` / `deck_name`: optional per-card deck routing when one file feeds several decks.
 
-For migration, the exporter accepts legacy `source:...` / `verified:...` tags when the dedicated field is absent, moves them into canonical metadata, and removes the legacy tags from exported tags.
+For migration, both exporters accept legacy `source:...` / `verified:...` tags when the dedicated field is absent, move them into canonical metadata, and remove the legacy tags from exported tags.
 
 ```json
 [
   {
     "kind": "scenario",
+    "id": "retry-ambiguity",
     "front": "A worker writes local state, then calls a remote service. The RPC times out after the remote side may have committed. What should you reason about before retrying?",
     "back": "Treat the outcome as ambiguous: determine whether the external operation is idempotent/deduplicated and how the system reconciles an unknown result before retrying blindly.",
     "extra": "Recognition card for partial-failure boundaries.",
     "tags": ["engineering", "distributed-systems", "system::payments::worker"],
     "source": "payments/worker retry path; PR #12345",
-    "verified": "2026-08"
+    "verified": "2026-08",
+    "priority": 80
   },
   {
     "kind": "reconstruction",
+    "id": "payments-write-path",
     "front": "Reconstruct the payment write path and identify the durable commit boundary.",
     "back": "API -> queue -> worker -> provider call -> local persistence; verify the exact ordering in the current implementation.",
     "tags": ["system::payments"],
     "source": "payments write-path architecture",
-    "verified": "2026-08"
+    "verified": "2026-08",
+    "priority": 70
   },
   {
     "kind": "cloze",
+    "id": "dijkstra-nonneg-weights",
     "text": "Dijkstra's algorithm assumes {{c1::non-negative edge weights}}.",
     "extra": "Negative weights can invalidate the greedy finalization step.",
     "tags": ["algorithms", "graphs"],
-    "source": "Algorithms chapter on shortest paths"
+    "source": "Algorithms chapter on shortest paths",
+    "deck": "shortest-paths",
+    "deck_name": "Shortest Paths"
   }
 ]
 ```
 
-See `anki-export.md` for the exact stock-note-type mapping and TSV import directives.
+See `deck-yaml.md` for the delivered deck schema, and `anki-export.md` for the stock-note-type mapping and TSV import directives.

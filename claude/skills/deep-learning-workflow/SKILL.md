@@ -30,6 +30,7 @@ Never assume a flashcard is the right output. Choose the learning mechanism firs
 
 2. Read the relevant reference before doing the work:
    - Card extraction/auditing -> `references/card-quality.md`
+   - Writing or exporting deck files -> `references/deck-yaml.md`
    - Books, articles, papers -> `references/book-study.md`
    - Codebases, PRs, incidents -> `references/codebase-study.md`
    - Practice problems -> `references/practice-design.md`
@@ -71,7 +72,7 @@ Output:
   Reason: ...
 
 ## Missing high-value cards
-[0-5 cards]
+[0-5 cards in the deck YAML schema]
 
 ## Better learned by practice
 [0-3 items with suggested exercise]
@@ -91,20 +92,33 @@ When the learner has not supplied cards:
 6. Add one synthesis/reconstruction prompt when isolated cards would fragment an important mental model.
 7. Mark any useful idea that should be practiced instead of memorized.
 
-Default card schema:
+Default card schema — the deck YAML used by the learner's Anki tool:
 
-```markdown
-### Card N — [QA | Cloze | Scenario | Reconstruction]
-Prompt: ...
-Answer: ...
-Extra: [optional context or example]
-Why: [one sentence explaining why this deserves retrieval]
-Tags: [small semantic/search-scope set]
-Source: [optional exact chapter/PR/code pointer]
-Verified: [optional YYYY-MM for mutable system knowledge]
+```yaml
+decks:
+  - id: shortest-paths
+    name: Shortest Paths
+    cards:
+      - id: dijkstra-negative-edges
+        front: Why does Dijkstra fail with negative edge weights?
+        back: "Once a node is finalized it is never revisited, so a later negative edge can produce a shorter path the greedy step already ruled out.\n\nSource: Algorithms ch. 24"
+        date: 2026-08-17
+        tags:
+          - algorithms
+          - graphs
+        priority: 70
 ```
 
-For cloze cards use valid Anki-style clozes such as `{{c1::...}}`. Prefer one conceptual deletion per note; use multiple clozes only when they belong to the same tightly coupled fact.
+Rules:
+
+- `date` is the authoring date (today, `YYYY-MM-DD`); `priority` is importance `0-100`, default `50`.
+- `id` is a stable semantic kebab-case slug, unique within the file, never renumbered.
+- `front`/`back` are the only content fields: fold `extra`, `source`, and `verified` into `back`, separated by blank lines.
+- Preserve the learning kind as a tag for non-`qa` cards: `scenario`, `reconstruction`, `cloze`.
+- For cloze cards keep valid Anki-style clozes such as `{{c1::...}}` on the front and put the revealed text on the back. Prefer one conceptual deletion per card; use multiple clozes only when they belong to the same tightly coupled fact.
+- When alongside prose, add a one-sentence `Why: ...` note per card outside the YAML rather than inside it — the schema has no field for it.
+
+Read `references/deck-yaml.md` before writing deck files.
 
 ## Practice workflow
 
@@ -137,7 +151,7 @@ Question: [what problem is this section answering?]
 [3-7 concise items]
 
 ## Cards
-[0-5 cards]
+[0-5 cards in the deck YAML schema]
 
 ## Practice
 [0-2 exercises]
@@ -173,11 +187,18 @@ For proprietary repositories, avoid copying secrets or large proprietary snippet
 
 ## Card export
 
-When the user asks for Anki-importable files:
+Two targets share one authoring step. Produce or validate cards using the workflows above, then save them using the JSON schema in `references/card-quality.md`.
 
-1. First produce or validate cards using the workflows above.
-2. Save cards using the JSON schema in `references/card-quality.md`.
-3. Run:
+### Deck YAML (default)
+
+```bash
+python scripts/deck_yaml.py cards.json --out decks.yaml \
+  --deck-id shortest-paths --deck-name "Shortest Paths"
+```
+
+This is the format the learner's personal Anki tool reads. Cloze markers stay on the front; `extra`/`source`/`verified` fold into `back`; kind becomes a tag. Read `references/deck-yaml.md` before changing the schema, ids, or priority conventions.
+
+### Stock Anki TSV (when importing into Anki itself)
 
 ```bash
 python scripts/anki_tsv.py cards.json --out-dir anki-export
@@ -202,6 +223,7 @@ Before finalizing any learning unit, verify:
 - Important context is present in the prompt, not assumed from the original reading session.
 - Stable principles are favored over transient trivia.
 - Clozes are not paragraph-shaped deletion exercises.
+- Every card has a stable semantic `id`, an authoring `date`, and a `priority` that matches its rubric score.
 - Procedures and skills have a practice component.
 - The learner periodically reconstructs larger wholes so atomic cards do not fragment understanding.
 - New cards are few enough that review load remains sustainable.
