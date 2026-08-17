@@ -1,117 +1,163 @@
 {
-  "$schema": "https://json.schemastore.org/claude-code-settings.json",
-  "permissions": {
-    "allow": [
-      "Bash(buf breaking:*)",
-      "Bash(cargo build:*)",
-      "Bash(cargo clippy:*)",
-      "Bash(cargo fmt:*)",
-      "Bash(cargo search:*)",
-      "Bash(cargo test:*)",
-      "Bash(cargo --version:*)",
-      "Bash(cat:*)",
-      "Bash(echo \"exit: $?\")",
-      "Bash(find:*)",
-      "Bash(gh issue list:*)",
-      "Bash(gh issue view:*)",
-      "Bash(gh job view:*)",
-      "Bash(gh pr checks:*)",
-      "Bash(gh pr comments:*)",
-      "Bash(gh pr diff:*)",
-      "Bash(gh pr list:*)",
-      "Bash(gh pr view:*)",
-      "Bash(gh pr watch:*)",
-      "Bash(gh repo view:*)",
-      "Bash(gh run list:*)",
-      "Bash(gh run view:*)",
-      "Bash(gh run watch:*)",
-      "Bash(gh search:*)",
-      "Bash(gh workflow list:*)",
-      "Bash(git diff:*)",
-      "Bash(git fetch:*)",
-      "Bash(git log:*)",
-      "Bash(git ls-tree:*)",
-      "Bash(git show:*)",
-      "Bash(git submodule status:*)",
-      "Bash(go build:*)",
-      "Bash(go doc:*)",
-      "Bash(go list:*)",
-      "Bash(go mod:*)",
-      "Bash(go test:*)",
-      "Bash(go vet:*)",
-      "Bash(gofmt:*)",
-      "Bash(golangci-lint run:*)",
-      "Bash(grep:*)",
-      "Bash(head:*)",
-      "Bash(jq:*)",
-      "Bash(ls:*)",
-      "Bash(make lint:*)",
-      "Bash(make lint-code:*)",
-      "Bash(make protoc:*)",
-      "Bash(make proto:*)",
-      "Bash(rustc --version)",
-      "Bash(sed:*)",
-      "Bash(tail:*)",
-      "Bash(tee:*)",
-      "Bash(uv run ruff check:*)",
-      "Bash(uv run ruff format:*)",
-      "Bash(uv run ruff:*)",
-      "Bash(uv sync:*)",
-      "Bash(yq:*)",
-      "mcp__filesystem__directory_tree",
-      "mcp__filesystem__list_directory",
-      "mcp__filesystem__read_multiple_files",
-      "mcp__filesystem__read_text_file",
-      "mcp__ide__getDiagnostics",
-      "mcp__notion__notion-fetch"
-    ],
-    "deny": [
-      "Read(./.env)"
-    ]
-  },
-  "model": "opus[1m]",
-  "enabledMcpjsonServers": [
-    "postgres",
-    "filesystem"
-  ],
-  "hooks": {
-    "Notification": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "claude-code-notification"
-          }
+    "$schema": "https://json.schemastore.org/claude-code-settings.json",
+    "permissions": {
+        "allow": [
+            "Bash(buf breaking:*)",
+            "Bash(cargo build:*)",
+            "Bash(cargo clippy:*)",
+            "Bash(cargo fmt:*)",
+            "Bash(cargo search:*)",
+            "Bash(cargo test:*)",
+            "Bash(cargo --version:*)",
+            "Bash(cat:*)",
+            "Bash(echo \"exit: $?\")",
+            "Bash(find:*)",
+            "Bash(gh issue list:*)",
+            "Bash(gh issue view:*)",
+            "Bash(gh job view:*)",
+            "Bash(gh pr checks:*)",
+            "Bash(gh pr comments:*)",
+            "Bash(gh pr diff:*)",
+            "Bash(gh pr list:*)",
+            "Bash(gh pr view:*)",
+            "Bash(gh pr watch:*)",
+            "Bash(gh repo view:*)",
+            "Bash(gh run list:*)",
+            "Bash(gh run view:*)",
+            "Bash(gh run watch:*)",
+            "Bash(gh search:*)",
+            "Bash(gh workflow list:*)",
+            "Bash(git diff:*)",
+            "Bash(git fetch:*)",
+            "Bash(git log:*)",
+            "Bash(git ls-tree:*)",
+            "Bash(git show:*)",
+            "Bash(git submodule status:*)",
+            "Bash(go build:*)",
+            "Bash(go doc:*)",
+            "Bash(go list:*)",
+            "Bash(go mod:*)",
+            "Bash(go test:*)",
+            "Bash(go vet:*)",
+            "Bash(gofmt:*)",
+            "Bash(golangci-lint run:*)",
+            "Bash(grep:*)",
+            "Bash(head:*)",
+            "Bash(jq:*)",
+            "Bash(ls:*)",
+            "Bash(make lint:*)",
+            "Bash(make lint-code:*)",
+            "Bash(make protoc:*)",
+            "Bash(make proto:*)",
+            "Bash(rustc --version)",
+            "Bash(sed:*)",
+            "Bash(tail:*)",
+            "Bash(tee:*)",
+            "Bash(uv run ruff check:*)",
+            "Bash(uv run ruff format:*)",
+            "Bash(uv run ruff:*)",
+            "Bash(uv sync:*)",
+            "Bash(yq:*)",
+            "mcp__filesystem__directory_tree",
+            "mcp__filesystem__list_directory",
+            "mcp__filesystem__read_multiple_files",
+            "mcp__filesystem__read_text_file",
+            "mcp__ide__getDiagnostics",
+            "mcp__notion__notion-fetch"
+        ],
+        "deny": [
+            "Read(./.env)"
         ]
-      }
-    ]
-  },
-  "statusLine": {
-    "type": "command",
-    "command": "npx -y ccstatusline@latest",
-    "padding": 0
-  },
-  "enabledPlugins": {
-    "superpowers@claude-plugins-official": true,
-    "learning-opportunities@learning-opportunities": true,
-    "orient@learning-opportunities": true,
-    "andrej-karpathy-skills@karpathy-skills": true,
-    "slack@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "learning-opportunities": {
-      "source": {
-        "source": "git",
-        "url": "https://github.com/DrCatHicks/learning-opportunities.git"
-      }
     },
-    "karpathy-skills": {
-      "source": {
-        "source": "github",
-        "repo": "forrestchang/andrej-karpathy-skills"
-      }
+    "model": "sonnet",
+    "enabledMcpjsonServers": [
+        "postgres",
+        "filesystem"
+    ],
+    "hooks": {
+        "Notification": [
+            {
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "claude-code-notification"
+                    }
+                ]
+            }
+        ],
+        "SessionStart": [
+            {
+                "matcher": "*",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "bash '/Users/seankane/.claude/hooks/herdr-agent-state.sh' session",
+                        "timeout": 10
+                    }
+                ]
+            }
+        ]
+    },
+    "statusLine": {
+        "type": "command",
+        "command": "npx -y ccstatusline@latest",
+        "padding": 0
+    },
+    "enabledPlugins": {
+        "superpowers@claude-plugins-official": true,
+        "learning-opportunities@learning-opportunities": true,
+        "orient@learning-opportunities": true,
+        "andrej-karpathy-skills@karpathy-skills": true,
+        "slack@claude-plugins-official": true,
+        "gopls-lsp@claude-plugins-official": true
+    },
+    "extraKnownMarketplaces": {
+        "learning-opportunities": {
+            "source": {
+                "source": "git",
+                "url": "https://github.com/DrCatHicks/learning-opportunities.git"
+            }
+        },
+        "karpathy-skills": {
+            "source": {
+                "source": "github",
+                "repo": "forrestchang/andrej-karpathy-skills"
+            }
+        }
+    },
+    "effortLevel": "xhigh",
+    "skipWorkflowUsageWarning": true,
+    "agentPushNotifEnabled": true,
+    "autoMode": {
+        "environment": [
+            "### Org-wide",
+            "**Organization**: None configured",
+            "**Cloud provider(s)**: None configured",
+            "**Repository visibility**: private (spkane31/rfq, confirmed via gh)",
+            "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
+            "**Secrets management**: None configured — credentials are environment-only (KALSHI_API_KEY_ID, KALSHI_PRIVATE_KEY_PATH), .env is gitignored",
+            "**Default / protected branches**: default branch main; no protected branches listed and rulesets not queryable here — do not assume main is unprotected",
+            "**CI/CD deploy targets**: None configured",
+            "**Network posture**: None configured",
+            "**Source control**: The trusted repo (spkane31/rfq) and its origin remote (github.com:spkane31/rfq.git) only — no additional orgs configured",
+            "**Trusted internal domains**: None configured",
+            "**Trusted cloud buckets**: None configured",
+            "**Key internal services**: Kalshi API/WebSocket (external-api-ws.kalshi.com, production trading endpoint) and Bolt Odds API (BOLTODDS_WS_URL) — used by this repo's cmd/rfq and cmd/mm tools",
+            "**Internal package registry**: None configured",
+            "**Sensitive data locations & audiences**: .env and .env.example (Kalshi API key ID, private key path); any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material — share only with audiences cleared at the [named+specifics] bar",
+            "**Data retention / declassification**: None configured",
+            "**Sensitive remote targets**: any namespace, host, or container whose name carries prod or production as a whole word or name segment; note Kalshi's default WS URL is production trading (KALSHI_WS_URL) unless overridden to the demo endpoint",
+            "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
+            "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries prod or production as a whole word or name segment",
+            "### User-specific",
+            "**Primary use of Claude Code**: software development (Go trading/market-making tooling for Kalshi RFQs and sportsbook market making)",
+            "**Trusted repo**: /Users/seankane/github.com/spkane31/rfq (working directory) and its origin remote github.com:spkane31/rfq.git — private repo, so confidential material is fine to commit there, but not secrets/credentials",
+            "**Org-specific CLIs**: None configured"
+        ],
+        "soft_deny": [
+            "$defaults",
+            "Bash(git push --force*) — origin spkane31/rfq",
+            "Real-money order placement against Kalshi production trading API when not in dry-run mode"
+        ]
     }
-  },
-  "skipWorkflowUsageWarning": true,
-  "agentPushNotifEnabled": true
 }
