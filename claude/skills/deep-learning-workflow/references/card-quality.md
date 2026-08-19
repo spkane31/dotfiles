@@ -114,7 +114,7 @@ Use metadata consistently:
 - `date`: authoring date `YYYY-MM-DD`, defaulting to the export date.
 - `deck` / `deck_name`: optional per-card deck routing when one file feeds several decks.
 
-For migration, both exporters accept legacy `source:...` / `verified:...` tags when the dedicated field is absent, move them into canonical metadata, and remove the legacy tags from exported tags.
+For migration, both exporters accept legacy `source:...` / `verified:...` tags when the dedicated field is absent, move them into canonical metadata, and remove the legacy tags from exported tags. The Deck YAML exporter writes canonical `source` as a YAML comment rather than card content; the stock-Anki TSV exporter continues to render it on the back.
 
 ```json
 [

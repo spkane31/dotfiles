@@ -100,6 +100,6 @@ Keep provenance and search scope separate:
 - Put the last verification month in the dedicated `verified` field as `YYYY-MM`, e.g. `2026-08`.
 - Use ordinary tags for stable subsystem scope, e.g. `system::payments::worker`, plus conceptual tags such as `retries` or `idempotency`.
 
-Do not manually create `source:...` or `verified:...` tags. The exporter treats `source`/`verified` as canonical metadata, renders both on the card back, and derives `verified::YYYY-MM` for search. Legacy single-colon provenance tags are accepted only for migration.
+Do not manually create `source:...` or `verified:...` tags. The exporters treat `source`/`verified` as canonical metadata. Deck YAML renders `source` as a comment and `verified` on the card back; stock-Anki TSV renders both on the back and derives `verified::YYYY-MM` for search. Legacy single-colon provenance tags are accepted only for migration.
 
 Prefer stable invariants and rationale over exact filenames. When a subsystem changes materially, search its `system::...` tag and re-audit affected cards; update `verified` after checking them against current code.

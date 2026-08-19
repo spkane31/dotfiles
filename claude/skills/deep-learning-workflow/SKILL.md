@@ -100,8 +100,9 @@ decks:
     name: Shortest Paths
     cards:
       - id: dijkstra-negative-edges
+        # Source: Algorithms ch. 24
         front: Why does Dijkstra fail with negative edge weights?
-        back: "Once a node is finalized it is never revisited, so a later negative edge can produce a shorter path the greedy step already ruled out.\n\nSource: Algorithms ch. 24"
+        back: Once a node is finalized it is never revisited, so a later negative edge can produce a shorter path the greedy step already ruled out.
         date: 2026-08-17
         tags:
           - algorithms
@@ -113,7 +114,7 @@ Rules:
 
 - `date` is the authoring date (today, `YYYY-MM-DD`); `priority` is importance `0-100`, default `50`.
 - `id` is a stable semantic kebab-case slug, unique within the file, never renumbered.
-- `front`/`back` are the only content fields: fold `extra`, `source`, and `verified` into `back`, separated by blank lines.
+- `front`/`back` are the only content fields: fold `extra` and `verified` into `back`, separated by blank lines. Put source provenance in a `# Source: ...` YAML comment beside the card so it is not shown during review.
 - Preserve the learning kind as a tag for non-`qa` cards: `scenario`, `reconstruction`, `cloze`.
 - For cloze cards keep valid Anki-style clozes such as `{{c1::...}}` on the front and put the revealed text on the back. Prefer one conceptual deletion per card; use multiple clozes only when they belong to the same tightly coupled fact.
 - When alongside prose, add a one-sentence `Why: ...` note per card outside the YAML rather than inside it — the schema has no field for it.
@@ -181,7 +182,7 @@ Prefer cards about:
 - design rationale and tradeoffs,
 - reusable code-review patterns.
 
-Avoid cards whose main value is memorizing filenames, line numbers, transient implementation details, or large code snippets. Put exact provenance in `source`; keep `extra` for learning context that belongs on the back of the card.
+Avoid cards whose main value is memorizing filenames, line numbers, transient implementation details, or large code snippets. Put exact provenance in the authoring JSON's `source`; the Deck YAML exporter renders it as a comment. Keep `extra` for learning context that belongs on the back of the card.
 
 For proprietary repositories, avoid copying secrets or large proprietary snippets into external study artifacts. Prefer conceptual summaries and local source pointers unless the user explicitly chooses otherwise and their policy permits it.
 
@@ -196,7 +197,7 @@ python scripts/deck_yaml.py cards.json --out decks.yaml \
   --deck-id shortest-paths --deck-name "Shortest Paths"
 ```
 
-This is the format the learner's personal Anki tool reads. Cloze markers stay on the front; `extra`/`source`/`verified` fold into `back`; kind becomes a tag. Read `references/deck-yaml.md` before changing the schema, ids, or priority conventions.
+This is the format the learner's personal Anki tool reads. Cloze markers stay on the front; `extra`/`verified` fold into `back`; `source` becomes a YAML comment; kind becomes a tag. Read `references/deck-yaml.md` before changing the schema, ids, or priority conventions.
 
 ### Stock Anki TSV (when importing into Anki itself)
 

@@ -31,7 +31,7 @@ decks:
 | `cards` | deck | yes | list of cards |
 | `id` | card | yes | stable, unique, kebab-case card slug |
 | `front` | card | yes | prompt shown first |
-| `back` | card | yes | answer plus any folded context/provenance |
+| `back` | card | yes | answer plus any folded learner context and verification date |
 | `date` | card | yes | `YYYY-MM-DD` authoring date (when the card was written) |
 | `tags` | card | no | semantic categories and stable search scopes |
 | `priority` | card | no | importance, `0-100`, default `50`; higher = more important |
@@ -75,18 +75,22 @@ Cloze cards keep valid Anki markers on the front so the same card survives a lat
 import into real Anki. The back shows the revealed sentence, so the card still grades
 cleanly in a plain front/back reviewer.
 
-## Folding extra, source, and verified into `back`
+## Source comments and folded back content
 
-The schema has no `extra`/`source`/`verified` fields. Append them to `back`, separated
-by blank lines, in this order:
+The schema has no `extra`/`source`/`verified` fields. Render `source` as a YAML comment
+beside the card so provenance remains in the authored file but is not shown on the
+card. Append `extra` and `verified` to `back`, separated by blank lines, in that order:
 
 ```yaml
-        back: "Whether the operation is idempotent.\n\nExtra: Recognition card for partial-failure boundaries.\n\nSource: payments/worker; PR #12345\nVerified: 2026-08"
+      - id: retry-ambiguity
+        # Source: payments/worker; PR #12345
+        front: What must you establish before retrying an ambiguous operation?
+        back: "Whether the operation is idempotent.\n\nExtra: Recognition card for partial-failure boundaries.\n\nVerified: 2026-08"
 ```
 
 Keep `tags` for concepts and stable scopes such as `system::payments::worker`. Do not
 author `source:` or `verified:` tags; the exporter migrates those legacy tags into the
-folded back text.
+source comment and folded back text, respectively.
 
 ## Generating the file
 
@@ -118,4 +122,4 @@ python scripts/test_deck_yaml.py
 ```
 
 The regression test covers all four kinds, deck grouping, id derivation and uniqueness,
-date/priority validation, cloze reveal, and YAML quoting/escaping.
+date/priority validation, source comments, cloze reveal, and YAML quoting/escaping.

@@ -103,16 +103,35 @@ class DeckYamlExportTests(unittest.TestCase):
         self.assertIn("          - reconstruction\n", text)
         self.assertIn("          - cloze\n", text)
 
-        # Newlines, quotes and provenance are folded into the quoted back field.
+        # Newlines, quotes, extra context, and verification are folded into the
+        # quoted back field. Source provenance is a YAML comment instead.
         self.assertIn("It holds locks.\\nIt widens the failure window.", text)
         self.assertIn("Extra: if x < y then commit", text)
-        self.assertIn("Source: chapter 7", text)
+        self.assertIn("        # Source: chapter 7\n", text)
         self.assertIn("Verified: 2026-08", text)
         self.assertIn('read then write \\"state\\"', text)
 
         # Cloze keeps its markers on the front and reveals the text on the back.
         self.assertIn("{{c1::non-negative edge weights}}", text)
         self.assertIn("Dijkstra assumes non-negative edge weights.", text)
+
+    @unittest.skipIf(yaml is None, "PyYAML not installed")
+    def test_source_is_a_comment_not_card_back_content(self):
+        cards = [
+            {
+                "kind": "qa",
+                "front": "What is the answer?",
+                "back": "The answer.",
+                "source": "chapter 7\nsection #2",
+            }
+        ]
+        text, _ = self.export(cards)
+
+        self.assertIn("        # Source: chapter 7\n", text)
+        self.assertIn("        # section #2\n", text)
+        parsed_card = yaml.safe_load(text)["decks"][0]["cards"][0]
+        self.assertEqual("The answer.", parsed_card["back"])
+        self.assertNotIn("source", parsed_card)
 
     @unittest.skipIf(yaml is None, "PyYAML not installed")
     def test_output_parses_as_the_expected_yaml_structure(self):

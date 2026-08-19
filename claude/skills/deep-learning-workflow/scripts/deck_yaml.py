@@ -20,7 +20,8 @@ The schema is front/back only, so:
 - qa/scenario/reconstruction map straight to front/back;
 - cloze keeps its {{cN::...}} markers on the front and reveals the text on the back;
 - kind is preserved as a plain tag for non-qa cards;
-- extra/source/verified are folded into the back field.
+- extra/verified are folded into the back field;
+- source is rendered as a YAML comment and is not card content.
 
 `date` is the authoring date and `priority` is importance (0-100, default 50).
 """
@@ -131,18 +132,23 @@ def canonical_metadata(card, card_number):
     return source, verified, tags
 
 
-def build_back(answer, extra, source, verified):
+def build_back(answer, extra, verified):
     parts = [clean(answer).strip()]
     if clean(extra).strip():
         parts.append(f"Extra: {clean(extra).strip()}")
-    provenance = []
-    if source:
-        provenance.append(f"Source: {source}")
     if verified:
-        provenance.append(f"Verified: {verified}")
-    if provenance:
-        parts.append("\n".join(provenance))
+        parts.append(f"Verified: {verified}")
     return "\n\n".join(part for part in parts if part)
+
+
+def source_comment(source, indent):
+    """Render source provenance as YAML comments at the given indentation."""
+    if not source:
+        return []
+    first, *rest = source.split("\n")
+    lines = [f"{indent}# Source: {first}"]
+    lines.extend(f"{indent}# {line}" if line else f"{indent}#" for line in rest)
+    return lines
 
 
 def reveal_cloze(text):
@@ -197,8 +203,9 @@ def convert(cards, default_deck_id, default_deck_name, default_date, default_pri
 
         entry = {
             "id": card_id,
+            "source": source,
             "front": front,
-            "back": build_back(answer, card.get("extra"), source, verified),
+            "back": build_back(answer, card.get("extra"), verified),
             "date": validate_date(card.get("date") or default_date, i),
             "tags": list(dict.fromkeys(tags)),
             "priority": validate_priority(
@@ -230,6 +237,7 @@ def render(decks):
         lines.append("    cards:")
         for card in deck["cards"]:
             lines.append(f"      - id: {scalar(card['id'])}")
+            lines.extend(source_comment(card["source"], "        "))
             lines.append(f"        front: {scalar(card['front'])}")
             lines.append(f"        back: {scalar(card['back'])}")
             lines.append(f"        date: {card['date']}")
