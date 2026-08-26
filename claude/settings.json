@@ -88,13 +88,7 @@
         "SessionStart": [
             {
                 "matcher": "*",
-                "hooks": [
-                    {
-                        "type": "command",
-                        "command": "bash '/Users/seankane/.claude/hooks/herdr-agent-state.sh' session",
-                        "timeout": 10
-                    }
-                ]
+                "hooks": []
             }
         ]
     },
@@ -126,9 +120,19 @@
         }
     },
     "effortLevel": "xhigh",
+    "modelSettings": {
+        "claude-sonnet-5": {
+            "effortLevel": "xhigh"
+        }
+    },
+    "tui": "fullscreen",
     "skipWorkflowUsageWarning": true,
+    "theme": "dark",
     "agentPushNotifEnabled": true,
     "autoMode": {
+        "soft_deny": [
+            "$defaults"
+        ],
         "environment": [
             "### Org-wide",
             "**Organization**: None configured",
@@ -153,11 +157,6 @@
             "**Primary use of Claude Code**: software development (Go trading/market-making tooling for Kalshi RFQs and sportsbook market making)",
             "**Trusted repo**: /Users/seankane/github.com/spkane31/rfq (working directory) and its origin remote github.com:spkane31/rfq.git — private repo, so confidential material is fine to commit there, but not secrets/credentials",
             "**Org-specific CLIs**: None configured"
-        ],
-        "soft_deny": [
-            "$defaults",
-            "Bash(git push --force*) — origin spkane31/rfq",
-            "Real-money order placement against Kalshi production trading API when not in dry-run mode"
         ]
     }
 }

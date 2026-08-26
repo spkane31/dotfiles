@@ -83,7 +83,7 @@
   "editor.formatOnSave": true,
   "workbench.iconTheme": "vscode-icons",
   "editor.fontFamily": "Source Code Pro for Powerline",
-  "terminal.integrated.fontFamily": "Source Code Pro for Powerline",
+  "terminal.integrated.fontFamily": "monospace",
   "editor.wordSeparators": "`~!@#$%^&*()=+[{]}\\|;:'\",.<>/?",
   "editor.renderWhitespace": "all",
   "diffEditor.ignoreTrimWhitespace": false,
@@ -132,5 +132,7 @@
     "vscode",
     "vscode-insiders"
   ],
-  "makefile.configureOnOpen": false
+  "makefile.configureOnOpen": false,
+  "terminal.integrated.mouseWheelScrollSensitivity": 3,
+  "terminal.integrated.gpuAcceleration": "off"
 }

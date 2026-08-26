@@ -49,7 +49,7 @@ trust_level = "trusted"
 [projects."/Users/seankane/git/github.com/spkane31/souvenir"]
 trust_level = "trusted"
 
-[projects."/Users/seankane/github.com/spkane31/rfq"]
+[projects."/Users/seankane/github.com/spkane31"]
 trust_level = "trusted"
 
 [projects."/Users/seankane/github.com/spkane31/projectEuler"]

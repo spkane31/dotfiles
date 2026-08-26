@@ -333,8 +333,8 @@ obsidian-study() {
 # pnpm
 export PNPM_HOME="/Users/seankane/Library/pnpm"
 case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
+  *":$PNPM_HOME/bin:"*) ;;
+  *) export PATH="$PNPM_HOME/bin:$PATH" ;;
 esac
 # pnpm end
 
@@ -382,6 +382,7 @@ setopt HIST_FIND_NO_DUPS
 
 export PATH="$HOME/go/bin:$PATH"
 . "$HOME/.local/bin/env"
+. "$HOME/.cargo/env"
 
 #THIS MUST BE AT THE END OF THE FILE FOR SDKMAN TO WORK!!!
 export SDKMAN_DIR="$HOME/.sdkman"
@@ -401,3 +402,4 @@ case ":${PATH}:" in
         export PATH="$HOME/.cargo/bin:$PATH"
         ;;
 esac
+export PATH="$HOME/.local/bin:$PATH"
