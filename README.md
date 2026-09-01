@@ -1,32 +1,50 @@
 # dotfiles
 
-Config files, symlinked into place on any machine via `install.sh`.
+Config files, managed via [chezmoi](https://www.chezmoi.io/), applied to any
+machine from this repo as the source directory.
 
 ## Install
 
-    git clone https://github.com/spkane31/dotfiles.git ~/dotfiles
-    ~/dotfiles/install.sh
+    brew install chezmoi
+    chezmoi init --source ~/path/to/this/checkout
+    chezmoi diff   # review what would change
+    chezmoi apply
 
-Existing files at the destination are backed up to `.backup/<hostname>/`
-inside this repo before being replaced with a symlink. Re-running is safe —
-files already linked correctly are left untouched. Optional entries that are
-not yet present in the repository are reported as `SKIPPED`.
+On first `init`, you'll be prompted once "Is this a work machine" — answer
+is cached locally in `~/.config/chezmoi/chezmoi.toml` (not committed) and
+controls the work-only sections of `dot_zshrc.tmpl` (Datadog PATH/env setup,
+and the Ansible-managed block that IT's automation also edits in place —
+see note below).
+
+Re-running `chezmoi apply` is safe; it only rewrites files that differ from
+what the template would produce.
+
+### Note on the work `.zshrc`'s Ansible-managed block
+
+The work machine's shell config has a section between
+`# BEGIN/END ANSIBLE MANAGED BLOCK` markers that IT's Ansible automation
+edits directly. `dot_zshrc.tmpl` freezes a copy of that block's current
+content for the `work` case. If Ansible's role changes what it writes there
+in the future, `chezmoi apply` will silently overwrite that change back to
+whatever is frozen in the template — there's no automatic sync. Periodically
+diff the live block against the template and update the template by hand if
+it drifts.
 
 ## Claude and Codex
 
-The installer links only the portable configuration below. Copy those files
-and directories into the matching repository paths; do not copy a whole local
-tool directory wholesale.
+chezmoi links only the portable configuration below into
+`~/.claude`/`~/.codex`. Copy files and directories into the matching
+repository paths; do not copy a whole local tool directory wholesale.
 
 | Tool | Local source | Repository path | Notes |
 | --- | --- | --- | --- |
-| Claude | `~/.claude/settings.json` | `claude/settings.json` | Already managed. Review permissions and plugin settings before committing. |
-| Claude | `~/.claude/CLAUDE.md` | `claude/CLAUDE.md` | Global instructions. |
-| Claude | `~/.claude/skills/` | `claude/skills/` | Your custom skills only. |
-| Codex | `~/.codex/config.toml` | `codex/config.toml` | Remove machine-specific project paths, app paths, and generated plugin/marketplace sections first. |
-| Codex | `~/.codex/rules/default.rules` | `codex/rules/default.rules` | Remove rules containing personal absolute paths before committing. |
-| Codex | `~/.codex/AGENTS.md` | `codex/AGENTS.md` | Optional global instructions, if you use one. |
-| Codex | `~/.codex/skills/` | `codex/skills/` | Your custom skills only; do not copy `.system/`. |
+| Claude | `~/.claude/settings.json` | `dot_claude/settings.json` | Already managed. Review permissions and plugin settings before committing. |
+| Claude | `~/.claude/CLAUDE.md` | `dot_claude/CLAUDE.md` | Global instructions. |
+| Claude | `~/.claude/skills/` | `dot_claude/skills/` | Your custom skills only. |
+| Codex | `~/.codex/config.toml` | `dot_codex/config.toml` | Remove machine-specific project paths, app paths, and generated plugin/marketplace sections first. |
+| Codex | `~/.codex/rules/default.rules` | `dot_codex/rules/default.rules` | Remove rules containing personal absolute paths before committing. |
+| Codex | `~/.codex/AGENTS.md` | `dot_codex/AGENTS.md` | Optional global instructions, if you use one. |
+| Codex | `~/.codex/skills/` | `dot_codex/skills/` | Your custom skills only; do not copy `.system/`. |
 
 Do **not** add authentication, history, caches, session state, databases, logs,
 or installed/bundled plugin files. In particular, exclude
@@ -38,11 +56,16 @@ The rest of each tool directory remains local, so runtime state such as
 sessions, history, caches, logs, and databases is not written into this
 repository.
 
+Unlike the old symlink-based installer, chezmoi copies rendered content into
+place rather than symlinking — a tool that mutates its own config at runtime
+(as `dot_codex/config.toml` currently does: trusted-project paths, plugin
+timestamps, hook state hashes) won't have those changes reflected back into
+the repo automatically. Run `chezmoi re-add` to pull local changes back into
+the source before they're lost to the next `chezmoi apply`.
+
 ## Adding a new file
 
-Append an entry to the `FILES` array in `install.sh`:
-
-    "path/in/repo:$HOME/local/path"
-
-Both files and directories can be linked. The source must exist in the
-repository before the installer will link it.
+Add it under the repo root using chezmoi's naming convention (`dot_` prefix
+for a leading dot, `.tmpl` suffix for a templated file) at the path it should
+land at under `$HOME`. See chezmoi's
+[source state docs](https://www.chezmoi.io/reference/source-state-attributes/).

@@ -1,5 +1,4 @@
-.backup/
 .DS_Store
 .local/
-codex/skills/.system/
+dot_codex/skills/.system/
 **/__pycache__/

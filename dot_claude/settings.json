@@ -117,6 +117,12 @@
                 "source": "github",
                 "repo": "forrestchang/andrej-karpathy-skills"
             }
+        },
+        "datadog-claude-plugins": {
+            "source": {
+                "source": "github",
+                "repo": "DataDog/claude-marketplace"
+            }
         }
     },
     "effortLevel": "xhigh",
@@ -128,35 +134,5 @@
     "tui": "fullscreen",
     "skipWorkflowUsageWarning": true,
     "theme": "dark",
-    "agentPushNotifEnabled": true,
-    "autoMode": {
-        "soft_deny": [
-            "$defaults"
-        ],
-        "environment": [
-            "### Org-wide",
-            "**Organization**: None configured",
-            "**Cloud provider(s)**: None configured",
-            "**Repository visibility**: private (spkane31/rfq, confirmed via gh)",
-            "**Internal sharing / snippet hosting**: None configured — treat public paste/gist services as outside the trust boundary",
-            "**Secrets management**: None configured — credentials are environment-only (KALSHI_API_KEY_ID, KALSHI_PRIVATE_KEY_PATH), .env is gitignored",
-            "**Default / protected branches**: default branch main; no protected branches listed and rulesets not queryable here — do not assume main is unprotected",
-            "**CI/CD deploy targets**: None configured",
-            "**Network posture**: None configured",
-            "**Source control**: The trusted repo (spkane31/rfq) and its origin remote (github.com:spkane31/rfq.git) only — no additional orgs configured",
-            "**Trusted internal domains**: None configured",
-            "**Trusted cloud buckets**: None configured",
-            "**Key internal services**: Kalshi API/WebSocket (external-api-ws.kalshi.com, production trading endpoint) and Bolt Odds API (BOLTODDS_WS_URL) — used by this repo's cmd/rfq and cmd/mm tools",
-            "**Internal package registry**: None configured",
-            "**Sensitive data locations & audiences**: .env and .env.example (Kalshi API key ID, private key path); any file or store holding personal data, confidential business data, credentials, regulated data, or similarly sensitive material — share only with audiences cleared at the [named+specifics] bar",
-            "**Data retention / declassification**: None configured",
-            "**Sensitive remote targets**: any namespace, host, or container whose name carries prod or production as a whole word or name segment; note Kalshi's default WS URL is production trading (KALSHI_WS_URL) unless overridden to the demo endpoint",
-            "**Protected deployment namespaces / environments**: None configured — fall back to the Sensitive remote targets heuristic",
-            "**Protected IaC scopes**: IAM, RBAC, networking, quota, and node-pool resources; anything whose name or tag carries prod or production as a whole word or name segment",
-            "### User-specific",
-            "**Primary use of Claude Code**: software development (Go trading/market-making tooling for Kalshi RFQs and sportsbook market making)",
-            "**Trusted repo**: /Users/seankane/github.com/spkane31/rfq (working directory) and its origin remote github.com:spkane31/rfq.git — private repo, so confidential material is fine to commit there, but not secrets/credentials",
-            "**Org-specific CLIs**: None configured"
-        ]
-    }
+    "agentPushNotifEnabled": true
 }
