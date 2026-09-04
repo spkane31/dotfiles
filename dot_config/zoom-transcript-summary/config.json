@@ -1,0 +1,10 @@
+{
+  "inbox": "/Users/sean.kane/Documents/Zoom Transcriptions",
+  "output_directory": "/Users/sean.kane/Documents/Obsidian Vault/b/ddog/meeting-notes",
+  "provider_command": ["/Users/sean.kane/.local/bin/claude", "-p", "--output-format", "text"],
+  "minimum_file_age_seconds": 300,
+  "maximum_transcript_bytes": 500000,
+  "transcript_extensions": [".vtt", ".txt"],
+  "recording_extensions": [".mp4", ".m4a", ".mov", ".mp3"],
+  "notify": true
+}

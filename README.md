@@ -41,7 +41,7 @@ repository paths; do not copy a whole local tool directory wholesale.
 | Claude | `~/.claude/settings.json` | `dot_claude/settings.json` | Already managed. Review permissions and plugin settings before committing. |
 | Claude | `~/.claude/CLAUDE.md` | `dot_claude/CLAUDE.md` | Global instructions. |
 | Claude | `~/.claude/skills/` | `dot_claude/skills/` | Your custom skills only. |
-| Codex | `~/.codex/config.toml` | `dot_codex/config.toml` | Remove machine-specific project paths, app paths, and generated plugin/marketplace sections first. |
+| Codex | `~/.codex/config.toml` | `dot_codex/private_config.toml` | Managed as private because Codex writes it with mode `0600`. Remove machine-specific project paths, app paths, and generated plugin/marketplace sections before committing if portability is desired. |
 | Codex | `~/.codex/rules/default.rules` | `dot_codex/rules/default.rules` | Remove rules containing personal absolute paths before committing. |
 | Codex | `~/.codex/AGENTS.md` | `dot_codex/AGENTS.md` | Optional global instructions, if you use one. |
 | Codex | `~/.codex/skills/` | `dot_codex/skills/` | Your custom skills only; do not copy `.system/`. |
@@ -62,6 +62,28 @@ place rather than symlinking — a tool that mutates its own config at runtime
 timestamps, hook state hashes) won't have those changes reflected back into
 the repo automatically. Run `chezmoi re-add` to pull local changes back into
 the source before they're lost to the next `chezmoi apply`.
+
+## Zoom transcript meeting notes
+
+`dot_local/bin/executable_summarize-zoom-transcripts.py` scans
+`~/Documents/Zoom Transcriptions` and creates one Markdown meeting note per
+completed meeting in `~/Documents/Obsidian Vault/b/ddog/meeting-notes`.
+It uses the installed Claude CLI and the managed skill at
+`~/.local/share/zoom-transcript-summary/SKILL.md`. Durable state is kept at
+`meeting-notes/.processed-state/processed-meetings.json`; state is written only
+after a note is atomically created.
+
+The job is installed as the macOS `launchd` agent
+`com.seankane.zoom-transcript-summary` and runs at login and every ten minutes.
+It prefers `.vtt` over `.txt`, waits five minutes after a file was last
+modified, skips previous state entries, and never sends mail or modifies any
+external system. Media without a transcript is transcribed only when the
+`whisper` CLI is installed; otherwise the job reports the precise file once and
+leaves it unprocessed.
+
+The inbox, output location, and agent command are configured in
+`~/.config/zoom-transcript-summary/config.json`. This configuration currently
+contains Sean's local paths; update it before applying on another machine.
 
 ## Adding a new file
 
