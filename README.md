@@ -67,7 +67,7 @@ the source before they're lost to the next `chezmoi apply`.
 
 `dot_local/bin/executable_summarize-zoom-transcripts.py` scans
 `~/Documents/Zoom Transcriptions` and creates one Markdown meeting note per
-completed meeting in `~/Documents/Obsidian Vault/ddog/meeting-notes`.
+completed meeting in `~/Documents/Obsidian Vault/meeting-notes`.
 It uses the installed Claude CLI and the managed skill at
 `~/.local/share/zoom-transcript-summary/SKILL.md`. Durable state is kept at
 `meeting-notes/.processed-state/processed-meetings.json`; state is written only
