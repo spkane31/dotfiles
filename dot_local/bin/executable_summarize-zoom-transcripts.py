@@ -14,10 +14,12 @@ import sys
 import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
+from zoneinfo import ZoneInfo
 
 CONFIG = Path.home() / ".config/zoom-transcript-summary/config.json"
 SKILL = Path.home() / ".local/share/zoom-transcript-summary/SKILL.md"
 REQUIRED_HEADINGS = ("## Executive summary",)
+TIME_ZONE = ZoneInfo("America/Denver")
 
 
 def load_json(path: Path, default: dict) -> dict:
@@ -72,7 +74,21 @@ def safe_name(value: str) -> str:
 def meeting_metadata(source: Path) -> tuple[str, str]:
     stem = source.stem
     date_match = re.search(r"\b(20\d{2}-\d{2}-\d{2})\b", stem)
-    date = date_match.group(1) if date_match else datetime.fromtimestamp(source.stat().st_mtime).date().isoformat()
+    timestamp_match = re.search(
+        r"\b(?P<date>20\d{2}-\d{2}-\d{2})\s+(?P<time>\d{1,2}:\d{2})\s*"
+        r"\(GMT(?P<offset>[+-]\d{1,2}:\d{2})\)",
+        stem,
+    )
+    if timestamp_match:
+        offset = timestamp_match.group("offset")
+        hours, minutes = offset[1:].split(":")
+        offset = f"{offset[0]}{int(hours):02d}:{minutes}"
+        source_time = datetime.fromisoformat(
+            f"{timestamp_match.group('date')}T{timestamp_match.group('time')}{offset}"
+        )
+        date = source_time.astimezone(TIME_ZONE).date().isoformat()
+    else:
+        date = date_match.group(1) if date_match else datetime.fromtimestamp(source.stat().st_mtime, tz=TIME_ZONE).date().isoformat()
     title = re.sub(r"\b20\d{2}-\d{2}-\d{2}\b.*$", "", stem)
     title = re.sub(r"\s*\([^)]*GMT[^)]*\)\s*", " ", title, flags=re.I).strip(" -_") or "Untitled meeting"
     return date, title
