@@ -1,5 +1,0 @@
-{
-  "output_directory": "/Users/sean.kane/Documents/Obsidian Vault/daily-briefing",
-  "provider_command": ["/Users/sean.kane/.local/bin/claude", "-p", "--output-format", "text"],
-  "notify": true
-}

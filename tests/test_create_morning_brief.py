@@ -1,4 +1,4 @@
-"""Tests for the scheduled morning-brief writer."""
+"""Timezone tests for the Zoom transcript summarizer."""
 
 from datetime import datetime, timezone
 import importlib.util
@@ -7,13 +7,6 @@ from pathlib import Path
 import time
 import unittest
 
-
-SCRIPT = Path(__file__).parents[1] / "dot_local/bin/executable_create-morning-brief.py"
-SPEC = importlib.util.spec_from_file_location("create_morning_brief", SCRIPT)
-assert SPEC and SPEC.loader
-MORNING_BRIEF = importlib.util.module_from_spec(SPEC)
-SPEC.loader.exec_module(MORNING_BRIEF)
-
 ZOOM_SCRIPT = Path(__file__).parents[1] / "dot_local/bin/executable_summarize-zoom-transcripts.py"
 ZOOM_SPEC = importlib.util.spec_from_file_location("summarize_zoom_transcripts", ZOOM_SCRIPT)
 assert ZOOM_SPEC and ZOOM_SPEC.loader
@@ -21,15 +14,7 @@ ZOOM = importlib.util.module_from_spec(ZOOM_SPEC)
 ZOOM_SPEC.loader.exec_module(ZOOM)
 
 
-class DestinationForTest(unittest.TestCase):
-    def test_uses_denver_calendar_date_in_output_directory(self) -> None:
-        now = datetime(2026, 9, 8, 5, 30, tzinfo=timezone.utc)
-
-        self.assertEqual(
-            MORNING_BRIEF.destination_for(Path("/vault/daily-briefing"), now),
-            Path("/vault/daily-briefing/20260907.md"),
-        )
-
+class ZoomTimezoneTest(unittest.TestCase):
     def test_zoom_fallback_date_uses_denver_time_not_process_timezone(self) -> None:
         source = Path(self._testMethodName + ".vtt")
         source.write_text("WEBVTT\n", encoding="utf-8")
@@ -55,7 +40,6 @@ class DestinationForTest(unittest.TestCase):
             self.assertEqual(ZOOM.meeting_metadata(source)[0], "2026-09-07")
         finally:
             source.unlink()
-
 
 if __name__ == "__main__":
     unittest.main()

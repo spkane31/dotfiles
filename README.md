@@ -85,16 +85,14 @@ The inbox, output location, and agent command are configured in
 `~/.config/zoom-transcript-summary/config.json`. This configuration currently
 contains Sean's local paths; update it before applying on another machine.
 
-## Morning brief
+Run it manually with:
 
-`dot_local/bin/executable_create-morning-brief.py` calls Claude Code on
-weekdays at 8:00 AM through `com.seankane.morning-brief`. Claude gathers from
-the connectors configured in its own session and returns Markdown; the script
-validates and atomically writes
-`~/Documents/Obsidian Vault/daily-briefing/YYYYMMDD.md`. The editable
-prompt and command settings are managed at
-`~/.local/share/morning-brief/PROMPT.md` and
-`~/.config/morning-brief/config.json`.
+```sh
+~/.local/bin/summarize-zoom-transcripts.py
+```
+
+Use `--dry-run` to generate without writing notes or state, or pass
+`--source /path/to/transcript.vtt` to process one transcript.
 
 ## Adding a new file
 
