@@ -1,1 +1,4 @@
 README.md
+.config/morning-brief
+.local/share/morning-brief
+.local/bin/__pycache__
