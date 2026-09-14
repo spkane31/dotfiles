@@ -96,14 +96,16 @@ def meeting_metadata(source: Path) -> tuple[str, str]:
 
 def output_path(output_dir: Path, source: Path) -> Path:
     date, title = meeting_metadata(source)
-    candidate = output_dir / f"{date}-{safe_name(title)}.md"
+    year, month = date.split("-")[:2]
+    month_dir = output_dir / year / month
+    candidate = month_dir / f"{date}-{safe_name(title)}.md"
     if not candidate.exists():
         return candidate
     # Never overwrite a note that may have been edited by a person or made for another source.
     source_marker = f'source: "{source.name}"'
     if source_marker in candidate.read_text(encoding="utf-8", errors="replace")[:1000]:
         return candidate
-    return output_dir / f"{date}-{safe_name(title)}-{digest(source)[:8]}.md"
+    return month_dir / f"{date}-{safe_name(title)}-{digest(source)[:8]}.md"
 
 
 def normalize_note(note: str, source: Path) -> str:
@@ -287,8 +289,8 @@ def main() -> int:
             if args.dry_run:
                 print(f"Would write: {destination}")
                 continue
-            output_dir.mkdir(parents=True, exist_ok=True)
-            with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=output_dir, prefix=".tmp-", delete=False) as f:
+            destination.parent.mkdir(parents=True, exist_ok=True)
+            with tempfile.NamedTemporaryFile("w", encoding="utf-8", dir=destination.parent, prefix=".tmp-", delete=False) as f:
                 f.write(note)
                 temporary = Path(f.name)
             os.replace(temporary, destination)
