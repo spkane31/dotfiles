@@ -128,7 +128,7 @@
     "effortLevel": "xhigh",
     "modelSettings": {
         "claude-sonnet-5": {
-            "effortLevel": "xhigh"
+            "effortLevel": "high"
         }
     },
     "tui": "fullscreen",

@@ -13,7 +13,9 @@ Use this order; include a section only when the transcript supports it:
 ---
 title: "<meeting title>"
 date: <YYYY-MM-DD>
-source: "<source filename>"
+sources: "<source filename>"
+attendees:
+  - "<attendee name>"
 ---
 
 # <meeting title>
@@ -41,6 +43,7 @@ source: "<source filename>"
 Requirements:
 
 - Be terse: use short bullets and compact paragraphs.
+- Always include the `attendees` property. List each attendee explicitly identified by the transcript, or use an empty list (`[]`) when no attendees can be identified. Never infer attendees.
 - **Executive summary** must be a short bulleted list, never a prose paragraph. Each bullet should cover one material theme, outcome, or context item.
 - Put **Action items** first when any exist. Use one checkbox per action: `- [ ]` for open or proposed work and `- [x]` only when completion is explicit.
 - Omit every unsupported or empty section entirely. Never write “Not applicable”, “None”, or placeholder text.

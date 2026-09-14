@@ -102,7 +102,7 @@ def output_path(output_dir: Path, source: Path) -> Path:
     if not candidate.exists():
         return candidate
     # Never overwrite a note that may have been edited by a person or made for another source.
-    source_marker = f'source: "{source.name}"'
+    source_marker = f'sources: "{source.name}"'
     if source_marker in candidate.read_text(encoding="utf-8", errors="replace")[:1000]:
         return candidate
     return month_dir / f"{date}-{safe_name(title)}-{digest(source)[:8]}.md"
@@ -121,7 +121,18 @@ def normalize_note(note: str, source: Path) -> str:
     if not note.startswith("---"):
         date, title = meeting_metadata(source)
         title = title.replace('"', "\\\\\"")
-        note = f'---\\ntitle: "{title}"\\ndate: {date}\\nsource: "{source.name}"\\n---\\n\\n{note}'
+        note = f'---\ntitle: "{title}"\ndate: {date}\nsources: "{source.name}"\nattendees: []\n---\n\n{note}'
+    else:
+        closing = re.search(r"(?m)^---\s*$", note[3:])
+        if closing:
+            closing_start = 3 + closing.start()
+            metadata = note[3:closing_start]
+            metadata = re.sub(r"(?m)^source(\s*:)", r"sources\1", metadata)
+            if not re.search(r"(?m)^sources\s*:", metadata):
+                metadata = metadata.rstrip() + f'\nsources: "{source.name}"\n'
+            if not re.search(r"(?m)^attendees\s*:", metadata):
+                metadata = metadata.rstrip() + "\nattendees: []\n"
+            note = note[:3] + metadata + note[closing_start:]
     # Drop Claude's occasional skill-use announcement after frontmatter.
     closing = re.search(r"(?m)^---\\s*$", note[3:])
     if closing:
