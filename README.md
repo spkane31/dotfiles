@@ -63,37 +63,6 @@ timestamps, hook state hashes) won't have those changes reflected back into
 the repo automatically. Run `chezmoi re-add` to pull local changes back into
 the source before they're lost to the next `chezmoi apply`.
 
-## Zoom transcript meeting notes
-
-`dot_local/bin/executable_summarize-zoom-transcripts.py` scans
-`~/Documents/Zoom Transcriptions` and creates one Markdown meeting note per
-completed meeting in `~/Documents/Obsidian Vault/aaa/meeting-notes`.
-It uses the installed Claude CLI and the managed skill at
-`~/.local/share/zoom-transcript-summary/SKILL.md`. Durable state is kept at
-`meeting-notes/.processed-state/processed-meetings.json`; state is written only
-after a note is atomically created.
-
-The job is installed as the macOS `launchd` agent
-`com.seankane.zoom-transcript-summary` and runs at login and every ten minutes.
-It prefers `.vtt` over `.txt`, waits five minutes after a file was last
-modified, skips previous state entries, and never sends mail or modifies any
-external system. Media without a transcript is transcribed only when the
-`whisper` CLI is installed; otherwise the job reports the precise file once and
-leaves it unprocessed.
-
-The inbox, output location, and agent command are configured in
-`~/.config/zoom-transcript-summary/config.json`. This configuration currently
-contains Sean's local paths; update it before applying on another machine.
-
-Run it manually with:
-
-```sh
-~/.local/bin/summarize-zoom-transcripts.py
-```
-
-Use `--dry-run` to generate without writing notes or state, or pass
-`--source /path/to/transcript.vtt` to process one transcript.
-
 ## Adding a new file
 
 Add it under the repo root using chezmoi's naming convention (`dot_` prefix

@@ -70,6 +70,7 @@
         ]
     },
     "model": "sonnet",
+    "outputStyle": "No Slop",
     "enabledMcpjsonServers": [
         "postgres",
         "filesystem"
