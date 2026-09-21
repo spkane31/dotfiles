@@ -25,6 +25,21 @@ A good card:
 - remains useful after superficial implementation details change;
 - is connected to a reason the learner cares about.
 
+For engineering topics, favor knowledge that changes what the learner would notice, decide, configure, investigate, or explain. A formula or mechanical calculation should become a card only when rapid unaided recall is useful in real work or the underlying relationship is necessary for sound engineering reasoning.
+
+## Purposeful representation clusters
+
+Ordinary extraction should avoid redundant cards. In deep study, several cards may address the same underlying idea when each trains a genuinely different retrieval route, such as:
+
+- symbolic or formal;
+- visual, spatial, or geometric;
+- causal or mechanistic;
+- operational or application-triggered;
+- diagnostic or symptom-driven;
+- contrastive or boundary-focused.
+
+Do not keep cards that merely paraphrase one another. For each companion card, be able to state what representation or use it trains that the others do not.
+
 Prefer prompts such as:
 - Why does X happen?
 - Under what conditions does X fail?
@@ -45,6 +60,7 @@ Reject or rewrite cards that:
 - ask several independent questions at once;
 - simply duplicate documentation;
 - test a coding skill that can only be learned through doing.
+- require manual calculation or symbolic manipulation that normal engineering work delegates to tools, unless the work exposes an important mechanism or the learner explicitly wants that capability.
 
 ## Cloze rules
 
@@ -68,6 +84,8 @@ Score each candidate 0-2 on each dimension:
 4. **Stability**: Is it likely to remain useful long enough to justify reviews?
 5. **Atomicity**: Is the recall burden appropriately small?
 
+For a companion card in a deep-study cluster, also ask whether it adds a distinct representation or use. If not, treat it as redundant even if it otherwise scores well.
+
 Interpretation:
 - 8-10: strong card;
 - 6-7: keep if central, otherwise revise;
@@ -85,7 +103,10 @@ Look especially for missing:
 - prerequisites;
 - failure cases;
 - implications;
-- application triggers.
+- application triggers;
+- operational workflow and normal tooling;
+- observable failure signals and diagnostic entry points;
+- practical constraints and tradeoffs.
 
 ## Deck YAML: the delivered format
 

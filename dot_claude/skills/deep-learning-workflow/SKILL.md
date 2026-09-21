@@ -18,18 +18,47 @@ Separate four jobs:
 
 Never assume a flashcard is the right output. Choose the learning mechanism first.
 
+## Default to engineering utility
+
+Unless the user supplies mathematical or formal material, asks for derivations, or names a capability that requires them, orient unfamiliar technical topics around practical engineering use:
+
+1. What problem does this solve?
+2. Where does an engineer encounter it?
+3. What decisions or tasks does it enable?
+4. How is it used with normal tools and workflows?
+5. What are its boundaries, tradeoffs, and failure modes?
+6. What underlying mechanism is necessary to reason about those situations?
+
+Do not infer a formal-learning goal merely because a topic contains notation, binary representations, formulas, or calculations. Use manual calculation only when it explains an operational mechanism, is a realistic job capability, is central to the supplied source, or is explicitly requested. Otherwise prefer interpretation, configuration, prediction, diagnosis, and tool-assisted practice.
+
+## Deliver cards progressively
+
+When the user wants cards as part of interactive study, use the topic or source as the required input. Treat intended use, prior knowledge, existing cards, and time budget as optional inputs; infer reasonable defaults instead of blocking on them.
+
+1. Establish the practical target and give one focused prompt or exercise.
+2. After the learner's first substantive attempt, produce a working batch of 2-5 provisional cards. If the initial request already contains enough evidence, produce the batch in the first response.
+3. Do not postpone the first batch beyond two learner responses or the third assistant response unless the user asks to delay cards.
+4. Continue with one focused exercise or question at a time. After evaluating each substantive attempt, label card changes as **Add**, **Revise**, **Keep**, **Retire**, or **No change**, then show the affected cards.
+5. Preserve card ids according to `references/card-lifecycle.md`. Treat the working batch as revisable, not final.
+
+Do not require completion of every deep-study phase before writing cards. If no durable card is justified at a checkpoint, explicitly explain why and identify the evidence still needed; never let `0-5 cards` silently become an indefinite sequence of zero-card turns.
+
 ## Workflow decision tree
 
 1. Identify the request:
    - User provides their own recall, notes, or cards -> follow **Audit**.
+   - User returns after reviewing existing cards -> follow **Card iteration**.
    - User provides a source and wants cards -> follow **Extract**.
-   - User wants exercises or deeper understanding -> follow **Practice**.
+   - User wants exercises -> follow **Practice**.
+   - User wants to deeply internalize one important idea -> follow **Deep study**.
    - User wants to learn a repository/module/PR -> follow **Codebase study**.
    - User wants to plan or work through a book -> follow **Book study**.
    - User wants a mixed session -> combine the relevant workflows, but keep outputs small.
 
 2. Read the relevant reference before doing the work:
    - Card extraction/auditing -> `references/card-quality.md`
+   - Revising working cards or cards seen in later reviews -> `references/card-lifecycle.md`
+   - Deeply internalizing one theorem, mechanism, or argument -> `references/deep-study.md`
    - Writing or exporting deck files -> `references/deck-yaml.md`
    - Books, articles, papers -> `references/book-study.md`
    - Codebases, PRs, incidents -> `references/codebase-study.md`
@@ -88,7 +117,7 @@ When the learner has not supplied cards:
    - "Before looking at the cards, explain X from memory and list the two ideas you think matter most."
    Do not block the task if the user explicitly wants direct extraction.
 4. Choose the right representations using `references/card-quality.md`.
-5. Produce **0-5 cards by default**. Treat 5 as a ceiling for a small unit, not a quota.
+5. Produce **1-5 cards by default when the user requested cards and at least one durable idea meets the rubric**. Use zero only when no candidate is justified, and state why. Treat 5 as a ceiling for a small unit, not a quota.
 6. Add one synthesis/reconstruction prompt when isolated cards would fragment an important mental model.
 7. Mark any useful idea that should be practiced instead of memorized.
 
@@ -121,11 +150,32 @@ Rules:
 
 Read `references/deck-yaml.md` before writing deck files.
 
+## Card iteration
+
+When the learner returns after reviewing cards, treat their review experience as evidence rather than starting a fresh extraction. Read `references/card-lifecycle.md` and diagnose each card before rewriting it.
+
+- Preserve the card's `id` and original authoring `date` when wording changes but the retrieval target remains the same.
+- Create a new `id` when the desired retrieval target materially changes.
+- For splits, merges, replacements, and stale cards, explicitly identify which ids survive and which should be suspended or retired. Never silently duplicate or reuse an old id for unrelated knowledge.
+- Prefer the learner's attempted answer, hesitation, mistake, or felt ambiguity over speculation about why a card is not working.
+
+Include a short **Revision decisions** section stating the evidence, action, id decision, and reason for every changed card.
+
+## Deep study workflow
+
+Use deep study only for a small, high-value target where the learner wants flexible, generative understanding rather than efficient coverage. Read `references/deep-study.md`.
+
+Choose the study orientation from the learner's intended use. Default technical concepts to the engineering-first orientation above; use a formal or mathematical orientation when the source or learner's goal warrants it. Deep study is iterative. Map the target, graze useful details, build distinct representations, compress the whole, explore boundaries, practice using it, rewrite the explanation, and prune provisional cards. It may eventually produce more than five cards, but introduce them in small batches and preserve the normal extract workflow as the default.
+
+Follow the progressive card-delivery contract. Use the deep-study activities to revise and extend the working cards; do not treat them as sequential prerequisites for producing the first batch.
+
+Do not activate unchecked generalizations as durable cards. Keep hypotheses and unverified boundary claims in the study notes until they are checked.
+
 ## Practice workflow
 
 Use exercises for procedural knowledge, transfer, debugging, implementation, derivation, and judgment.
 
-1. Identify exactly what the studied section should enable the learner to do.
+1. Identify exactly what the studied section should enable the learner to do. For engineering topics, state this as an observable task, decision, diagnosis, or explanation before considering calculations.
 2. Generate a task that uses current material and minimal unstated prerequisites.
 3. Require prediction or planning before execution when useful.
 4. Do not reveal the full solution before the learner attempts it unless explicitly requested.
@@ -226,5 +276,8 @@ Before finalizing any learning unit, verify:
 - Clozes are not paragraph-shaped deletion exercises.
 - Every card has a stable semantic `id`, an authoring `date`, and a `priority` that matches its rubric score.
 - Procedures and skills have a practice component.
+- Engineering-oriented units prioritize realistic use, decisions, tooling, and failure modes over formal work that is not operationally necessary.
 - The learner periodically reconstructs larger wholes so atomic cards do not fragment understanding.
 - New cards are few enough that review load remains sustainable.
+- Existing ids are preserved only when the underlying retrieval target remains the same.
+- Claims promoted from exploratory deep study have been verified.

@@ -45,6 +45,21 @@ cards; the id is the identity the learner's tool schedules against.
 The exporter fills in `{deck-id}-{NN}` when an id is absent, but authored semantic ids
 are better. Duplicate ids are rejected.
 
+Treat the id as the identity of a retrieval target, not merely a label for its current
+wording. When iterating on an existing card:
+
+- keep the id when clarifying or shortening a prompt without changing what must be recalled;
+- keep the original `date` for an in-place revision;
+- create a new id and authoring date for a materially different retrieval target;
+- when splitting a card, retain the old id only for the successor that preserves its semantic core;
+- when merging cards, retain the id of the surviving retrieval target and retire the others;
+- never reuse a retired id for unrelated knowledge.
+
+These rules keep accumulated scheduling history attached to the memory it actually
+measures. Use `references/card-lifecycle.md` for the full revision workflow. Version
+control or a revision report can preserve change history without expanding the deck
+schema.
+
 ## Priority
 
 `priority` encodes importance, not scheduling state. Use the audit rubric in

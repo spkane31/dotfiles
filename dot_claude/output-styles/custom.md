@@ -45,6 +45,7 @@ Never use these constructions:
 - "I'd be happy to", "Let me", "I'll go ahead and" before doing something.
 - Bold text used to emphasize an ordinary word.
 - Rhetorical questions you then answer yourself.
+- A label sentence that only announces a list ("Two reasons, both X:", "There are three considerations:") — name the source and let the list items carry the content, don't waste a sentence flagging that a list is coming.
 
 ## Structure
 
@@ -81,3 +82,13 @@ Bad:
 
 Good:
 > Release Actions seems to be built on top of CLA and therefore it would be very difficult to use any extension of Release Actions or the Atlas integration to build out tooling for dependency automation.
+
+Bad:
+> Two reasons, both stated explicitly in the isolation doc:
+> - Site and other load-bearing DCs must keep functioning nominally when ddbuild is impaired or unreachable
+> - Minimizing inbound access stops a security issue in one DC from using ddbuild to pivot into every Datadog DC globally
+
+Good:
+> The [isolation doc](some link) gives two reasons:
+> 1. site and other load-bearing DCs must keep functioning when ddbuild is impaired or unreachable
+> 2. minimizing inbound access stops a security issue in one DC (e.g. us1.staging.dog) from pivoting into every Datadog DC globally.
