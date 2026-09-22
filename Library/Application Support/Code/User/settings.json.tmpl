@@ -27,6 +27,11 @@
   "go.lintOnSave": "file",
   "go.formatTool": "gofmt",
   "go.useLanguageServer": true,
+{{- if .work }}
+  "go.alternateTools": {
+    "gopls": "/opt/homebrew/bin/dd-gopls"
+  },
+{{- end }}
   "[go]": {
     "editor.formatOnSave": true,
     "editor.defaultFormatter": "golang.go",

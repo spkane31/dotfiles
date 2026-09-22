@@ -265,6 +265,13 @@ function new-gw() {
   if [ -d "${repo_root}/.claude" ]; then
     cp -r "${repo_root}/.claude/." "${worktree_path}/.claude"
   fi
+
+  if [ -f "${repo_root}/.vscode/use_shared_settings.sh" ]; then
+    mkdir -p "${worktree_path}/.vscode"
+    ln -sf "$HOME/.config/dd-source/settings.local.json" "${worktree_path}/.vscode/settings.local.json"
+    (cd "$worktree_path" && ./.vscode/use_shared_settings.sh)
+  fi
+
   code "$worktree_path"
 }
 

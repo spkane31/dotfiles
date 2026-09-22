@@ -1,0 +1,11 @@
+{
+  "go.alternateTools": {
+    "gopls": "/opt/homebrew/bin/dd-gopls"
+  },
+  "go.toolsEnvVars": {
+    "GOPLS_DISABLE_MODULE_LOADS": "1"
+  },
+  "indexedDomains": [
+    "cloud-orchestration"
+  ]
+}
