@@ -1,61 +1,7 @@
-model = "gpt-5.6-terra"
+model = "gpt-6-sol"
 model_reasoning_effort = "high"
 approvals_reviewer = "auto_review"
 notify = ["/Users/sean.kane/.codex/computer-use/Codex Computer Use.app/Contents/SharedSupport/SkyComputerUseClient.app/Contents/MacOS/SkyComputerUseClient", "turn-ended"]
-
-[projects."/Users/seankane/git/github.com/temporalio/temporal"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/temporalio/cli"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/gauravthadani/temporal-template"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/temporalio/documentation"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/temporalio/features"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/spkane31/t2"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/temporalio/api"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/temporalio/saas-cicd"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/temporalio/api-go"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/spkane31/dotfiles"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/github.com/spkane31/dotfiles"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/github.com/spkane31/scoopd"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/github.com/ff-sims"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/spkane31/rfq"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/spkane31/chanki"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/git/github.com/spkane31/souvenir"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/github.com/spkane31"]
-trust_level = "trusted"
-
-[projects."/Users/seankane/github.com/spkane31/projectEuler"]
-trust_level = "trusted"
 
 [projects."/Users/sean.kane/Documents/Zoom"]
 trust_level = "trusted"
@@ -65,6 +11,29 @@ trust_level = "trusted"
 
 [projects."/Users/sean.kane/dd/dd-source"]
 trust_level = "trusted"
+
+[projects."/Users/sean.kane/dd/ddtool"]
+trust_level = "trusted"
+
+[projects."/Users/sean.kane/dd/runtime-metadata-service"]
+trust_level = "trusted"
+
+[projects."/Users/sean.kane/dd/datacenter-config"]
+trust_level = "trusted"
+
+[projects."/Users/sean.kane/git/github.com/spkane31/obsidian-last-modified-tracking"]
+trust_level = "trusted"
+
+[projects."/Users/sean.kane/git/github.com/spkane31/obsidian-backup"]
+trust_level = "trusted"
+
+[projects."/Users/sean.kane/Documents/Obsidian Vault"]
+trust_level = "trusted"
+
+[tui]
+screen_reader_detection_done = true
+status_line = ["model-with-reasoning", "current-dir", "thread-name", "git-branch", "context-remaining", "five-hour-limit", "weekly-limit"]
+status_line_use_colors = true
 
 [tui.model_availability_nux]
 "gpt-5.5" = 4
@@ -141,10 +110,70 @@ followUpQueueMode = "steer"
 
 [hooks.state]
 
-[hooks.state."/Users/seankane/.codex/hooks.json:session_start:0:0"]
-trusted_hash = "sha256:abba9fd66045851e634878a080f54a3c3507404981efc01b9412c5fa111cdfde"
-enabled = false
-
 [hooks.state."browser@openai-bundled:plugin.json#hooks[0]:stop:0:0"]
 trusted_hash = "sha256:317a07045dfc95aef2e80c55428a2f817e2768be867e3b1ef29a73da8636ae7f"
 enabled = true
+
+# Trajectory (binary installed separately under ~/.trajectory)
+[mcp_servers.trajectory]
+command = "/Users/sean.kane/.trajectory/bin/trajectory"
+args = ["mcp"]
+
+[marketplaces.trajectory]
+source_type = "local"
+source = "/Users/sean.kane/.trajectory/codex-marketplace"
+
+[plugins."trajectory@trajectory"]
+enabled = true
+
+[hooks.state."trajectory@trajectory:hooks.json:pre_tool_use:0:0"]
+enabled = true
+trusted_hash = "sha256:ed19d31d0a6602224d32b56c7e1897f387dc8856a08dd49f652b643fa576536d"
+
+[hooks.state."trajectory@trajectory:hooks.json:pre_tool_use:1:0"]
+enabled = false
+trusted_hash = "sha256:9c3742fd3306308c5a44582b22cb72d69eb6a184b5b341363a3304198c0c67bb"
+
+[hooks.state."trajectory@trajectory:hooks.json:permission_request:0:0"]
+enabled = false
+trusted_hash = "sha256:d01a8363edf6b4e423d772d8dfa29e20f9a0ee7f58a774e009db07b67f9f3608"
+
+[hooks.state."trajectory@trajectory:hooks.json:post_tool_use:0:0"]
+enabled = true
+trusted_hash = "sha256:88c580a8d5b80c1303fd0acfba3bbad1d25688651d39de07b27f167aca3b7d6d"
+
+[hooks.state."trajectory@trajectory:hooks.json:post_tool_use:1:0"]
+enabled = false
+trusted_hash = "sha256:c5965f66bc68c781ef639fb453d98fa52c541a0071271228dfa99ea2014f9e4b"
+
+[hooks.state."trajectory@trajectory:hooks.json:pre_compact:0:0"]
+enabled = false
+trusted_hash = "sha256:b42815608a427c77419d6935e44746c198ca22b53cc5e9a70cf2ba65039ab50c"
+
+[hooks.state."trajectory@trajectory:hooks.json:post_compact:0:0"]
+enabled = false
+trusted_hash = "sha256:134faeca17cb670860a8cc16bb27962bc45a8852af1411540ab63f9ad9effe92"
+
+[hooks.state."trajectory@trajectory:hooks.json:session_start:0:0"]
+enabled = true
+trusted_hash = "sha256:8479e08ed2411e89f5d276e825a6cf2ed883be2085faa86283c6078577658f8f"
+
+[hooks.state."trajectory@trajectory:hooks.json:user_prompt_submit:0:0"]
+enabled = true
+trusted_hash = "sha256:ca501e865cc01d15d4f32e329446d496f26143f51ef2d6cc809ad1bedea7987c"
+
+[hooks.state."trajectory@trajectory:hooks.json:subagent_start:0:0"]
+enabled = false
+trusted_hash = "sha256:7df720fc84d2a3c2a0142cd59aac997e60e4b880414863cf278d90743b65760c"
+
+[hooks.state."trajectory@trajectory:hooks.json:subagent_stop:0:0"]
+enabled = false
+trusted_hash = "sha256:eddfad4b42ff2c2d55aeddaef0e4997482142c7867015348f95bce68f4b71f67"
+
+[hooks.state."trajectory@trajectory:hooks.json:stop:0:0"]
+enabled = true
+trusted_hash = "sha256:0bf474d4ce5128576f6b9c38cdcf91feb4004989ad9cdf2b74f009dbfdd0bb27"
+
+[hooks.state."trajectory@trajectory:hooks.json:session_end:0:0"]
+enabled = true
+trusted_hash = "sha256:6f61fb05990a333959ee589658521842d8c21d511f7d24292d8b9b1a5e296888"

@@ -67,10 +67,10 @@
         ],
         "deny": [
             "Read(./.env)"
-        ]
+        ],
+        "defaultMode": "auto"
     },
     "model": "sonnet",
-    "outputStyle": "No Slop",
     "enabledMcpjsonServers": [
         "postgres",
         "filesystem"
@@ -126,6 +126,7 @@
             }
         }
     },
+    "outputStyle": "No Slop",
     "effortLevel": "xhigh",
     "modelSettings": {
         "claude-sonnet-5": {

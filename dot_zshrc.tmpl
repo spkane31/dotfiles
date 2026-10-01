@@ -6,7 +6,7 @@ if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]
 fi
 
 {{- if .work }}
-path=(/opt/dogbrew/shims/bin /opt/dogbrew/bin ${${path:#/opt/dogbrew/shims/bin}:#/opt/dogbrew/bin}); fpath=(/opt/dogbrew/share/zsh/site-functions ${fpath:#/opt/dogbrew/share/zsh/site-functions}) # dogbrew shell setup
+[ -f "/opt/dogbrew/share/etc/dogbrew/init.zsh" ] && . "/opt/dogbrew/share/etc/dogbrew/init.zsh"
 # BEGIN ANSIBLE MANAGED BLOCK
 # Load homebrew shell variables
 eval "$(/opt/homebrew/bin/brew shellenv)"
