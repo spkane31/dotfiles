@@ -69,7 +69,7 @@ chezmoi manages only the portable config under `~/.pi/agent`:
 
 | Local source | Repository path | Notes |
 | --- | --- | --- |
-| `~/.pi/agent/settings.json` | `dot_pi/agent/settings.json` | Theme, default provider/model, thinking levels, and the installed package list. Contains absolute paths to local package checkouts (`~/dd/...`) — review before applying on another machine. |
+| `~/.pi/agent/settings.json` | `dot_pi/agent/settings.json` | Theme, default provider/model, thinking levels, the installed package list, and the `skills` array bridging pi to the Claude skills below (`~/.claude/skills`) so both harnesses share one skill source. Pi reads the live Claude directory, so skills stay in sync for both tools. Claude-only frontmatter is ignored and skills with `disable-model-invocation: true` are still available via `/skill:<name>`. Contains absolute paths to local package checkouts (`~/dd/...`) — review before applying on another machine. |
 | `~/.pi/agent/mcp-adapter.json` | `dot_pi/agent/mcp-adapter.json` | MCP servers for the `pi-mcp-adapter` package. The legacy `~/.pi/agent/mcp.json` was merged into this file and removed (neither Pi core nor the adapter reads it anymore). |
 
 Everything else in `~/.pi` stays local: `auth.json` (credentials — never commit;

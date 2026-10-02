@@ -1,5 +1,8 @@
 {
   "defaultThinkingLevel": "medium",
+  "skills": [
+    "~/.claude/skills"
+  ],
   "packages": [
     "npm:context-mode",
     "npm:pi-subagents",
