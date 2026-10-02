@@ -2,3 +2,11 @@ README.md
 .config/morning-brief
 .local/share/morning-brief
 .local/bin/__pycache__
+
+# pi agent: only settings and the adapter MCP config are managed; everything
+# else in ~/.pi (auth, sessions, caches, installed packages, extensions) stays
+# local. mcp.json is legacy (merged into mcp-adapter.json) and ignored.
+.pi/agent/*
+!.pi/agent/settings.json
+!.pi/agent/mcp-adapter.json
+.pi/context-mode/**

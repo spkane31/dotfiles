@@ -1,0 +1,25 @@
+{
+  "defaultThinkingLevel": "medium",
+  "packages": [
+    "npm:context-mode",
+    "npm:pi-subagents",
+    "npm:pi-mcp-adapter",
+    "npm:pi-markdown-preview",
+    "npm:pi-powerline-footer",
+    "npm:@juicesharp/rpiv-ask-user-question",
+    "npm:@datadog/pi-plugin",
+    "/Users/sean.kane/dd/datadog-pi-packages/packages/refresh-models",
+    "/Users/sean.kane/dd/datadog-pi-packages/packages/research-web",
+    "git:https://github.com/hasit/pi-community-themes"
+  ],
+  "lastChangelogVersion": "0.84.4",
+  "theme": "solarized-dark",
+  "defaultProvider": "ai-gw-logical",
+  "defaultModel": "glm-5-3",
+  "modelThinkingLevels": {
+    "ai-gw-logical/glm-5-3": "high",
+    "openai-codex/gpt-6.1-sol": "high",
+    "openai-codex/gpt-6-sol": "high"
+  },
+  "outputPad": 0
+}

@@ -1,0 +1,14 @@
+{
+  "mcpServers": {
+    "trajectory": {
+      "args": [
+        "mcp"
+      ],
+      "command": "/Users/sean.kane/.pi/agent/extensions/trajectory/bin/trajectory",
+      "lifecycle": "lazy"
+    },
+    "mcp": {
+      "url": "https://mcp.datadoghq.com/v1/mcp?toolsets=core,software-delivery"
+    }
+  }
+}

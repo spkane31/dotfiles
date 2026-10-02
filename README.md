@@ -63,6 +63,26 @@ timestamps, hook state hashes) won't have those changes reflected back into
 the repo automatically. Run `chezmoi re-add` to pull local changes back into
 the source before they're lost to the next `chezmoi apply`.
 
+## Pi agent
+
+chezmoi manages only the portable config under `~/.pi/agent`:
+
+| Local source | Repository path | Notes |
+| --- | --- | --- |
+| `~/.pi/agent/settings.json` | `dot_pi/agent/settings.json` | Theme, default provider/model, thinking levels, and the installed package list. Contains absolute paths to local package checkouts (`~/dd/...`) — review before applying on another machine. |
+| `~/.pi/agent/mcp-adapter.json` | `dot_pi/agent/mcp-adapter.json` | MCP servers for the `pi-mcp-adapter` package. The legacy `~/.pi/agent/mcp.json` was merged into this file and removed (neither Pi core nor the adapter reads it anymore). |
+
+Everything else in `~/.pi` stays local: `auth.json` (credentials — never commit;
+also blocked by `.chezmoiignore` and chezmoi's secret detection), `sessions/`,
+caches (`mcp-cache.json`, `models*.json`), installed packages (`npm/`, `bin/`,
+`git/`, `extensions/`), and runtime state (`trust.json`, approvals,
+`pi-subagents/`, `powerline-footer/`). These are excluded via `.chezmoiignore`
+so an accidental `chezmoi add ~/.pi/...` is a no-op.
+
+Pi rewrites `settings.json` as you use it (e.g. `lastChangelogVersion`), so
+local edits drift from the repo; run `chezmoi re-add dot_pi/agent/...` to pull
+them in before the next `chezmoi apply` overwrites them.
+
 ## Adding a new file
 
 Add it under the repo root using chezmoi's naming convention (`dot_` prefix
