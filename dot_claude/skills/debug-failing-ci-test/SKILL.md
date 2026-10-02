@@ -1,6 +1,6 @@
 ---
 name: debug-failing-ci-test
-description: Use when given a GitHub Actions URL for a failing CI run and asked to investigate and fix the failing test. Triggers on: "this test failed in CI", "CI is failing", given a github.com/*/actions/runs/* URL, or asked to diagnose a test failure from a CI run.
+description: 'Use when given a GitHub Actions URL for a failing CI run and asked to investigate and fix the failing test. Triggers on: "this test failed in CI", "CI is failing", given a github.com/*/actions/runs/* URL, or asked to diagnose a test failure from a CI run.'
 ---
 
 # Debug Failing CI Test
