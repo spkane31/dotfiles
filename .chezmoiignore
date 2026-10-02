@@ -10,3 +10,19 @@ README.md
 !.pi/agent/settings.json
 !.pi/agent/mcp-adapter.json
 .pi/context-mode/**
+
+# Obsidian: manage the main vault's .obsidian config (never the notes).
+# workspace.json is runtime UI state; plugin code (main.js/styles.css) is
+# downloaded by the install script, so only manifest.json + data.json are
+# managed — except the custom last-modified-tracking plugin, whose main.js
+# ships in this repo. New snippets, themes, and plugin settings are
+# addable with plain `chezmoi add`.
+Documents/*
+!Documents/Obsidian Vault
+Documents/Obsidian Vault/*
+!Documents/Obsidian Vault/.obsidian
+Documents/Obsidian Vault/.obsidian/workspace.json
+Documents/Obsidian Vault/.obsidian/plugins/*/main.js
+Documents/Obsidian Vault/.obsidian/plugins/*/styles.css
+Documents/Obsidian Vault/.obsidian/plugins/*/obsidian_askpass.sh
+!Documents/Obsidian Vault/.obsidian/plugins/last-modified-tracking/main.js

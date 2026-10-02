@@ -1,0 +1,155 @@
+/* ==========================================================================
+   Alternate checkboxes — task states only
+   --------------------------------------------------------------------------
+   Obsidian treats ANY non-space character between the brackets as "checked",
+   so [/] [-] [>] [<] all render as a ticked box with dimmed, struck-through
+   text. That makes a blocked task look finished. This snippet gives each
+   task state its own glyph and color, and undoes the "done" text styling for
+   every state except [x] and [-].
+
+   Covers the six real task states. Non-task signals (open questions, info,
+   ideas, wins) are plain bullets with emoji prefixes — see
+   06_Metadata/Claude/Reference/alternate-checkboxes.md
+   ========================================================================== */
+
+:root {
+	--cb-todo: var(--text-muted);
+	--cb-progress: #d29922; /* amber  */
+	--cb-done: var(--color-green);
+	--cb-cancelled: var(--text-faint);
+	--cb-forwarded: #58a6ff; /* blue   */
+	--cb-waiting: #a371f7; /* purple */
+}
+
+/* --------------------------------------------------------------------------
+   1. Undo the "completed" text treatment for states that are NOT completed.
+   [x] keeps it (genuinely done). [-] keeps it (cancelled, struck on purpose).
+   -------------------------------------------------------------------------- */
+
+.markdown-reading-view .task-list-item.is-checked[data-task="/"],
+.markdown-reading-view .task-list-item.is-checked[data-task=">"],
+.markdown-reading-view .task-list-item.is-checked[data-task="<"],
+.markdown-source-view .HyperMD-task-line[data-task="/"],
+.markdown-source-view .HyperMD-task-line[data-task=">"],
+.markdown-source-view .HyperMD-task-line[data-task="<"] {
+	color: var(--text-normal);
+	text-decoration: none;
+}
+
+/* the line-through is applied to inner spans in live preview */
+.markdown-source-view .HyperMD-task-line[data-task="/"] span,
+.markdown-source-view .HyperMD-task-line[data-task=">"] span,
+.markdown-source-view .HyperMD-task-line[data-task="<"] span {
+	text-decoration: none;
+}
+
+/* --------------------------------------------------------------------------
+   2. Turn the checkbox into a glyph container for alternate states.
+      Clears the native tick so ::after can draw the marker instead.
+   -------------------------------------------------------------------------- */
+
+[data-task="/"] > input.task-list-item-checkbox,
+[data-task="-"] > input.task-list-item-checkbox,
+[data-task=">"] > input.task-list-item-checkbox,
+[data-task="<"] > input.task-list-item-checkbox {
+	background-color: transparent !important;
+	background-image: none !important;
+	border: 1.5px solid var(--cb-todo);
+	position: relative;
+}
+
+[data-task="/"] > input.task-list-item-checkbox::after,
+[data-task="-"] > input.task-list-item-checkbox::after,
+[data-task=">"] > input.task-list-item-checkbox::after,
+[data-task="<"] > input.task-list-item-checkbox::after {
+	position: absolute;
+	inset: 0;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 0.78em;
+	font-weight: 700;
+	line-height: 1;
+	background-image: none;
+	-webkit-mask-image: none;
+	mask-image: none;
+}
+
+/* --------------------------------------------------------------------------
+   3. Per-state glyph and color
+   -------------------------------------------------------------------------- */
+
+/* [/] in progress */
+[data-task="/"] > input.task-list-item-checkbox {
+	border-color: var(--cb-progress);
+}
+[data-task="/"] > input.task-list-item-checkbox::after {
+	content: "/";
+	color: var(--cb-progress);
+}
+
+/* [-] cancelled */
+[data-task="-"] > input.task-list-item-checkbox {
+	border-color: var(--cb-cancelled);
+}
+[data-task="-"] > input.task-list-item-checkbox::after {
+	content: "–";
+	color: var(--cb-cancelled);
+}
+
+/* [>] forwarded / migrated */
+[data-task=">"] > input.task-list-item-checkbox {
+	border-color: var(--cb-forwarded);
+}
+[data-task=">"] > input.task-list-item-checkbox::after {
+	content: "›";
+	color: var(--cb-forwarded);
+	font-size: 1em;
+}
+
+/* [<] waiting / blocked */
+[data-task="<"] > input.task-list-item-checkbox {
+	border-color: var(--cb-waiting);
+}
+[data-task="<"] > input.task-list-item-checkbox::after {
+	content: "‹";
+	color: var(--cb-waiting);
+	font-size: 1em;
+}
+
+/* --------------------------------------------------------------------------
+   4. Waiting items read as "parked" — slightly muted text, not struck
+   -------------------------------------------------------------------------- */
+
+.markdown-reading-view .task-list-item[data-task="<"],
+.markdown-source-view .HyperMD-task-line[data-task="<"] {
+	color: var(--text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   5. Safety net: any OTHER non-standard character still in the vault
+      (legacy [i] [n] [I] [!] [*] [?]) renders as a hollow box rather than a
+      tick, so it never reads as done. Remove this block once the migration
+      to emoji-prefixed bullets is complete everywhere.
+   -------------------------------------------------------------------------- */
+
+[data-task="?"] > input.task-list-item-checkbox,
+[data-task="!"] > input.task-list-item-checkbox,
+[data-task="i"] > input.task-list-item-checkbox,
+[data-task="I"] > input.task-list-item-checkbox,
+[data-task="n"] > input.task-list-item-checkbox,
+[data-task="*"] > input.task-list-item-checkbox {
+	background-color: transparent !important;
+	background-image: none !important;
+	border: 1.5px dashed var(--text-faint);
+}
+
+.markdown-reading-view .task-list-item.is-checked[data-task="?"],
+.markdown-reading-view .task-list-item.is-checked[data-task="!"],
+.markdown-reading-view .task-list-item.is-checked[data-task="i"],
+.markdown-reading-view .task-list-item.is-checked[data-task="I"],
+.markdown-reading-view .task-list-item.is-checked[data-task="n"],
+.markdown-reading-view .task-list-item.is-checked[data-task="*"] {
+	color: var(--text-normal);
+	text-decoration: none;
+}

@@ -83,6 +83,51 @@ Pi rewrites `settings.json` as you use it (e.g. `lastChangelogVersion`), so
 local edits drift from the repo; run `chezmoi re-add dot_pi/agent/...` to pull
 them in before the next `chezmoi apply` overwrites them.
 
+## Obsidian
+
+chezmoi manages the config of the main vault,
+`~/Documents/Obsidian Vault/.obsidian` — never the notes themselves:
+
+| What | Managed? | Notes |
+| --- | --- | --- |
+| `app.json`, `appearance.json`, `community-plugins.json`, `core-plugins.json`, `graph.json`, `hotkeys.json`, `types.json` | Yes | Core editor settings. |
+| `snippets/*.css` | Yes | Custom CSS snippets; add new ones with `chezmoi add`. |
+| `themes/` (future custom themes) | Addable | Not present yet; `chezmoi add "~/Documents/Obsidian Vault/.obsidian/themes/<name>.css"` works and the directory is not ignored. |
+| `plugins/<id>/manifest.json`, `data.json` | Yes | Version pins + per-plugin settings. |
+| `plugins/<id>/main.js`, `styles.css` | Auto-installed | Downloaded by a script (below), not stored in this repo. |
+| `plugins/last-modified-tracking/` | Fully | Custom plugin (not in the community catalog) — its `main.js` ships in this repo. |
+| `workspace.json` | No | Runtime UI state (open panes), excluded via `.chezmoiignore`. |
+| Vault notes, `~/.local`…, everything else under `~/Documents` | No | Blocked by `.chezmoiignore` (`Documents/*` except the vault's `.obsidian`). |
+
+### Plugin code auto-install
+
+`.chezmoiscripts/run_after_install-obsidian-plugins.sh` runs on every
+`chezmoi apply`. For each managed plugin missing `main.js` it looks up the
+repo in the official community catalog and downloads the release matching
+the version pinned in the managed `manifest.json` (falling back to `latest`).
+It is a silent no-op when all plugin code is already present, and skips
+custom plugins whose `main.js` is managed here. So the fresh-machine flow
+is just `chezmoi apply` — settings arrive, then the script fills in plugin
+code — no manual installs. Downloaded code can differ bytewise from an
+already-installed copy when authors rebuild release assets; the pinned
+version is what gets installed.
+
+The `obsidian-backup` vault (`~/git/github.com/spkane31/obsidian-backup`)
+manages its own `.obsidian` inside its own git repository and is
+deliberately not managed here. Vault notes sync separately via the
+obsidian-git plugin.
+
+As with Pi/Codex, plugins rewrite their `data.json` during normal use
+(e.g. Excalidraw's counters) — run `chezmoi re-add` to pull local changes
+into the source before the next `chezmoi apply` overwrites them.
+
+> **`--source` gotcha:** this checkout is not registered as chezmoi's
+> default source directory (`~/.config/chezmoi/chezmoi.toml` has no
+> `sourceDir`), so a plain `chezmoi add ~/.foo` silently writes to
+> `~/.local/share/chezmoi` instead of this repo. Always pass
+> `--source ~/git/github.com/spkane31/dotfiles` (or set `sourceDir` in
+> `chezmoi.toml`).
+
 ## Adding a new file
 
 Add it under the repo root using chezmoi's naming convention (`dot_` prefix

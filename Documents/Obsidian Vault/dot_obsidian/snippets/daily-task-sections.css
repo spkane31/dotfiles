@@ -1,0 +1,133 @@
+/* ==========================================================================
+   Daily-note task sections — callout look, heading structure
+   --------------------------------------------------------------------------
+   WHY THIS EXISTS
+
+   Obsidian does not tell plugins which line was clicked when a checkbox sits
+   inside a callout in Live Preview — it reports the callout title instead.
+   The Tasks plugin therefore refuses to touch the line, so ticking a box in
+   a callout never gets its `✅ YYYY-MM-DD` completion date and never rolls a
+   recurring task forward. It's an upstream Obsidian limitation, not
+   something the plugin can fix.
+
+   So `Tasks — Projects` and `Tasks — Areas` are plain `##` headings with
+   ordinary `- [ ]` lines. This snippet gives those two sections the visual
+   weight the callouts used to carry, so the daily note still reads as a set
+   of distinct blocks.
+
+   SCOPE
+
+   Everything here is gated on `.daily-note`, which comes from
+   `cssclasses: [daily-note]` in the daily-note frontmatter. Nothing applies
+   anywhere else in the vault. Every other section of the daily note is still
+   a real callout and is deliberately left alone.
+
+   Pairs with alternate-checkboxes.css, which styles the checkbox glyphs
+   themselves. That snippet owns the boxes; this one owns the containers.
+   ========================================================================== */
+
+.daily-note {
+	--dts-accent: var(--color-purple);
+	--dts-accent-areas: var(--color-cyan);
+	--dts-tint: color-mix(in srgb, var(--dts-accent) 6%, transparent);
+	--dts-tint-areas: color-mix(in srgb, var(--dts-accent-areas) 6%, transparent);
+	--dts-radius: var(--radius-m);
+	--dts-pad: 0.75em;
+}
+
+/* ==========================================================================
+   1. READING VIEW
+   --------------------------------------------------------------------------
+   Reading view exposes the heading text as `data-heading`, so each of the
+   two sections can take its own accent — Projects keeps the purple of the
+   old [!example] callout, Areas the cyan of [!tip].
+   ========================================================================== */
+
+.daily-note .markdown-reading-view h2[data-heading^="Tasks —"] {
+	margin-bottom: 0;
+	padding: 0.4em 0.75em 0.3em;
+	border-radius: var(--dts-radius) var(--dts-radius) 0 0;
+	border-left: 3px solid var(--dts-accent);
+	background: var(--dts-tint);
+	font-size: var(--h4-size);
+	font-weight: var(--font-semibold);
+	color: var(--dts-accent);
+	letter-spacing: 0.01em;
+}
+
+.daily-note
+	.markdown-reading-view
+	h2[data-heading^="Tasks —"]
+	+ ul.contains-task-list {
+	margin-top: 0;
+	padding: var(--dts-pad) var(--dts-pad) var(--dts-pad) 2em;
+	border-radius: 0 0 var(--dts-radius) var(--dts-radius);
+	border-left: 3px solid var(--dts-accent);
+	background: var(--dts-tint);
+}
+
+/* Areas takes the cyan accent. */
+.daily-note .markdown-reading-view h2[data-heading="Tasks — Areas"],
+.daily-note
+	.markdown-reading-view
+	h2[data-heading="Tasks — Areas"]
+	+ ul.contains-task-list {
+	--dts-accent: var(--dts-accent-areas);
+	--dts-tint: var(--dts-tint-areas);
+}
+
+/* The `---` rules between sections are redundant once the blocks are tinted. */
+.daily-note .markdown-reading-view hr {
+	border-color: var(--background-modifier-border);
+	opacity: 0.35;
+}
+
+/* ==========================================================================
+   2. LIVE PREVIEW
+   --------------------------------------------------------------------------
+   Live Preview renders one `.cm-line` per line and exposes no heading text,
+   so the two sections cannot be told apart here — both get the single
+   `--dts-accent`. The daily note has no other top-level `##` headings (the
+   Journal and Meeting Notes sub-headings are `###`, inside callouts), so
+   targeting h2 is precise.
+
+   `:not(.HyperMD-quote)` is what keeps this off the callout sections — every
+   line inside a callout carries that class.
+   ========================================================================== */
+
+.daily-note .markdown-source-view .cm-line.HyperMD-header-2:not(.HyperMD-quote) {
+	padding: 0.4em 0.75em 0.3em;
+	border-radius: var(--dts-radius) var(--dts-radius) 0 0;
+	border-left: 3px solid var(--dts-accent);
+	background: var(--dts-tint);
+	font-size: var(--h4-size);
+	color: var(--dts-accent);
+}
+
+.daily-note
+	.markdown-source-view
+	.cm-line.HyperMD-list-line:not(.HyperMD-quote) {
+	padding-left: 1.5em;
+	border-left: 3px solid var(--dts-accent);
+	background: var(--dts-tint);
+}
+
+/* Round off the last list line of a section — the one followed by a blank
+   line or a `---`. Purely cosmetic; harmless if the theme overrides it. */
+.daily-note
+	.markdown-source-view
+	.cm-line.HyperMD-list-line:not(.HyperMD-quote):has(+ .cm-line:not(.HyperMD-list-line)) {
+	border-radius: 0 0 var(--dts-radius) var(--dts-radius);
+	padding-bottom: 0.35em;
+}
+
+/* ==========================================================================
+   3. LIGHT MODE
+   --------------------------------------------------------------------------
+   color-mix on a 6% tint is nearly invisible on white; lift it slightly.
+   ========================================================================== */
+
+.theme-light .daily-note {
+	--dts-tint: color-mix(in srgb, var(--dts-accent) 9%, transparent);
+	--dts-tint-areas: color-mix(in srgb, var(--dts-accent-areas) 9%, transparent);
+}
