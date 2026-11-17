@@ -1,3 +1,7 @@
+## Attribution
+- Never add AI attribution to pull request titles, descriptions, or commit messages. This includes "Generated with Claude Code", "Generated with Codex", AI co-author trailers, badges, and session links.
+- Before creating or updating a pull request, check the final title and description and remove any AI attribution, including attribution copied from a template or skill.
+
 ## Code References
 - When referencing code (explaining, discussing, or pointing to specific logic), always use clickable Markdown links with the fully qualified file path and line numbers
 - Follow the agent runtime's required link format. For this runtime, use `[file.go:42](/full/path/to/file.go:42)` or `[file.go:42-50](/full/path/to/file.go:42)` for ranges.
